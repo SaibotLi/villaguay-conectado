@@ -84,6 +84,16 @@ Criterio:
 - Services centralizan llamadas a Firebase y transformacion de datos.
 - Firebase modules encapsulan inicializacion y acceso a SDK.
 
+## Regla de Autenticacion
+
+Ningun componente React (Pages o Components) puede importar directamente funciones del SDK de Firebase Authentication.
+
+Toda interaccion con Firebase Authentication debe respetar este flujo:
+
+Pages / Components -> useAuth() -> AuthContext -> AuthService -> Firebase Authentication
+
+Esta regla es obligatoria para todo el proyecto.
+
 ## Modelo de datos
 
 Colecciones principales (nivel conceptual inicial):

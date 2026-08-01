@@ -3,6 +3,13 @@
   gap: 0.75rem;
 }
 
+.authStatus {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #e2e2e2;
+  background: #fafafa;
+}
+
 .links {
   display: flex;
   gap: 0.75rem;
