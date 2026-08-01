@@ -1,16 +1,49 @@
-# React + Vite
+# VillaguayConectado
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto Final  
+Tecnicatura Universitaria en Informatica Aplicada al Diseno Web  
+Universidad Nacional del Litoral
 
-Currently, two official plugins are available:
+## Descripcion
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+VillaguayConectado es una aplicacion web desarrollada como proyecto final de la carrera. Su objetivo es centralizar la difusion de eventos de la ciudad de Villaguay permitiendo que los usuarios consulten eventos, se registren y propongan nuevas actividades.
 
-## React Compiler
+## Tecnologias utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React
+- Vite
+- React Router DOM
+- Firebase Authentication
+- Cloud Firestore
+- CSS Modules
+- Vercel
 
-## Expanding the ESLint configuration
+## Instalacion
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Descomprimir el proyecto.
+2. Abrir una terminal en la carpeta del proyecto.
+3. Ejecutar:
+
+```bash
+npm install
+```
+
+4. Ejecutar:
+
+```bash
+npm run dev
+```
+
+5. Abrir:
+
+http://localhost:5173
+
+## Compilacion
+
+```bash
+npm run build
+```
+
+## Proyecto desplegado
+
+https://villaguay-conectado.vercel.app/
