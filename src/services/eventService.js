@@ -1,4 +1,11 @@
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import {
+	addDoc,
+	collection,
+	getDocs,
+	query,
+	serverTimestamp,
+	where,
+} from 'firebase/firestore'
 import { db } from '../firebase/firestore'
 
 // Transforma el documento de Firebase en un objeto JavaScript estable para React.
@@ -29,4 +36,25 @@ async function getEvents() {
 	return snapshot.docs.map(mapEventDocument)
 }
 
-export { getEvents }
+// Crea una propuesta de evento y la guarda siempre con estado pendiente de revision.
+async function createEvent(eventData) {
+	const eventsRef = collection(db, 'events')
+	const payload = {
+		title: eventData.title.trim(),
+		description: eventData.description.trim(),
+		location: eventData.location.trim(),
+		mapsUrl: eventData.mapsUrl?.trim() ?? '',
+		date: eventData.date,
+		time: eventData.time,
+		imageUrl: '',
+		status: 'pending',
+		createdBy: eventData.createdBy,
+		createdAt: serverTimestamp(),
+	}
+
+	const newEventRef = await addDoc(eventsRef, payload)
+
+	return newEventRef.id
+}
+
+export { getEvents, createEvent }

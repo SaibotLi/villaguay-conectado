@@ -1,5 +1,6 @@
 import styles from './Events.module.css'
 import { useEvents } from '../../hooks/useEvents'
+import EventCard from '../../components/event/EventCard'
 
 function Events() {
   const { events, loading, error } = useEvents()
@@ -37,10 +38,7 @@ function Events() {
       <ul className={styles.list}>
         {events.map((event) => (
           <li key={event.id} className={styles.item}>
-            <h2 className={styles.title}>{event.title}</h2>
-            <p>Ubicacion: {event.location}</p>
-            <p>Fecha: {event.date}</p>
-            <p>Hora: {event.time}</p>
+            <EventCard event={event} />
           </li>
         ))}
       </ul>
