@@ -1,6 +1,8 @@
 import {
 	addDoc,
 	collection,
+	doc,
+	getDoc,
 	getDocs,
 	query,
 	serverTimestamp,
@@ -36,6 +38,18 @@ async function getEvents() {
 	return snapshot.docs.map(mapEventDocument)
 }
 
+// Obtiene un evento por id y retorna null cuando no existe.
+async function getEventById(id) {
+	const eventRef = doc(db, 'events', id)
+	const eventSnapshot = await getDoc(eventRef)
+
+	if (!eventSnapshot.exists()) {
+		return null
+	}
+
+	return mapEventDocument(eventSnapshot)
+}
+
 // Crea una propuesta de evento y la guarda siempre con estado pendiente de revision.
 async function createEvent(eventData) {
 	const eventsRef = collection(db, 'events')
@@ -57,4 +71,4 @@ async function createEvent(eventData) {
 	return newEventRef.id
 }
 
-export { getEvents, createEvent }
+export { getEvents, getEventById, createEvent }
