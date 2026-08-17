@@ -2,6 +2,7 @@ import styles from './CreateEvent.module.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import EventForm from '../../components/forms/EventForm/EventForm'
 import { createEvent } from '../../services/eventService'
 
 function CreateEvent() {
@@ -75,96 +76,20 @@ function CreateEvent() {
   }
 
   return (
-    <section className={styles.page}>
-      <h1>Proponer evento</h1>
-
-      {!user && (
-        <p className={styles.feedback}>
-          Debes iniciar sesion para enviar una propuesta.
-        </p>
-      )}
-
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <label className={styles.field}>
-          <span>Titulo</span>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-            disabled={!user || isSubmitting}
-          />
-        </label>
-
-        <label className={styles.field}>
-          <span>Descripcion</span>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={4}
-            required
-            disabled={!user || isSubmitting}
-          />
-        </label>
-
-        <label className={styles.field}>
-          <span>Ubicacion</span>
-          <input
-            type="text"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            required
-            disabled={!user || isSubmitting}
-          />
-        </label>
-
-        <label className={styles.field}>
-          <span>Enlace de Google Maps (opcional)</span>
-          <input
-            type="url"
-            name="mapsUrl"
-            value={formData.mapsUrl}
-            onChange={handleChange}
-            placeholder="https://maps.google.com/..."
-            disabled={!user || isSubmitting}
-          />
-        </label>
-
-        <label className={styles.field}>
-          <span>Fecha</span>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-            disabled={!user || isSubmitting}
-          />
-        </label>
-
-        <label className={styles.field}>
-          <span>Hora</span>
-          <input
-            type="time"
-            name="time"
-            value={formData.time}
-            onChange={handleChange}
-            required
-            disabled={!user || isSubmitting}
-          />
-        </label>
-
-        <button type="submit" className={styles.submitButton} disabled={!user || isSubmitting}>
-          {isSubmitting ? 'Enviando...' : 'Proponer evento'}
-        </button>
-      </form>
-
-      {error && <p className={styles.feedback}>{error}</p>}
-      {successMessage && <p className={styles.success}>{successMessage}</p>}
-    </section>
+    <EventForm
+      title="Proponer evento"
+      formData={formData}
+      onChange={handleChange}
+      onSubmit={handleSubmit}
+      submitLabel="Proponer evento"
+      submittingLabel="Enviando..."
+      isSubmitting={isSubmitting}
+      isFormDisabled={!user}
+      helperMessage={!user ? 'Debes iniciar sesion para enviar una propuesta.' : ''}
+      errorMessage={error}
+      successMessage={successMessage}
+      styles={styles}
+    />
   )
 }
 

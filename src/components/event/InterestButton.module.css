@@ -1,0 +1,19 @@
+.button {
+  justify-self: start;
+  border: 1px solid #2b2b2b;
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  background: #ffffff;
+  color: #2b2b2b;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #f2f2f2;
+}
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

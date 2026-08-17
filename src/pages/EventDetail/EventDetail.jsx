@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { useEvent } from '../../hooks/useEvent'
+import InterestButton from '../../components/event/InterestButton'
 import styles from './EventDetail.module.css'
 
 function EventDetail() {
@@ -60,6 +61,8 @@ function EventDetail() {
             Ver ubicacion en Google Maps
           </a>
         ) : null}
+
+        <InterestButton eventId={event.id} />
       </article>
     </section>
   )

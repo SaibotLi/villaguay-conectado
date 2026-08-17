@@ -4,6 +4,7 @@ import Home from '../pages/Home/Home'
 import Events from '../pages/Events/Events'
 import EventDetail from '../pages/EventDetail/EventDetail'
 import CreateEvent from '../pages/CreateEvent/CreateEvent'
+import EditEvent from '../pages/EditEvent/EditEvent'
 import Login from '../pages/Login/Login'
 import Register from '../pages/Register/Register'
 import Community from '../pages/Community/Community'
@@ -11,6 +12,7 @@ import About from '../pages/About/About'
 import Contact from '../pages/Contact/Contact'
 import Admin from '../pages/Admin/Admin'
 import NotFound from '../pages/NotFound/NotFound'
+import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute'
 
 function AppRouter() {
 	return (
@@ -26,7 +28,22 @@ function AppRouter() {
 					<Route path="comunidad" element={<Community />} />
 					<Route path="sobre" element={<About />} />
 					<Route path="contacto" element={<Contact />} />
-					<Route path="admin" element={<Admin />} />
+					<Route
+						path="admin"
+						element={(
+							<ProtectedRoute requiredRole="admin">
+								<Admin />
+							</ProtectedRoute>
+						)}
+					/>
+					<Route
+						path="admin/eventos/:id/editar"
+						element={(
+							<ProtectedRoute requiredRole="admin">
+								<EditEvent />
+							</ProtectedRoute>
+						)}
+					/>
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>

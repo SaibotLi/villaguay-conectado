@@ -1,5 +1,6 @@
 import { createContext, useEffect, useMemo, useState } from 'react'
 import {
+	getUserProfile,
 	login,
 	logout,
 	observeAuthState,
@@ -14,9 +15,34 @@ function AuthProvider({ children }) {
 
 	useEffect(() => {
 		// Mantiene sincronizado el estado local con la sesión real en Firebase Authentication.
-		const unsubscribe = observeAuthState((firebaseUser) => {
-			setUser(firebaseUser)
-			setLoading(false)
+		const unsubscribe = observeAuthState(async (firebaseUser) => {
+			if (!firebaseUser) {
+				setUser(null)
+				setLoading(false)
+				return
+			}
+
+			try {
+				// Enriquece el usuario de Authentication con el perfil guardado en Firestore.
+				const profile = await getUserProfile(firebaseUser.uid)
+
+				setUser({
+					uid: firebaseUser.uid,
+					email: firebaseUser.email,
+					displayName: profile?.displayName ?? firebaseUser.displayName ?? '',
+					role: profile?.role ?? null,
+				})
+			} catch {
+				// Mantiene la app estable si falla la lectura del perfil.
+				setUser({
+					uid: firebaseUser.uid,
+					email: firebaseUser.email,
+					displayName: firebaseUser.displayName ?? '',
+					role: null,
+				})
+			} finally {
+				setLoading(false)
+			}
 		})
 
 		return unsubscribe
