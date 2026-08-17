@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { useEvent } from '../../hooks/useEvent'
 import InterestButton from '../../components/event/InterestButton'
+import ShareButton from '../../components/event/ShareButton'
 import styles from './EventDetail.module.css'
 
 function EventDetail() {
@@ -63,6 +64,7 @@ function EventDetail() {
         ) : null}
 
         <InterestButton eventId={event.id} />
+        <ShareButton title={event.title} eventId={event.id} />
       </article>
     </section>
   )

@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
-import { isInterested, toggleInterest } from '../services/interestService'
+import {
+	getInterestCount,
+	isInterested,
+	toggleInterest,
+} from '../services/interestService'
 
 function useInterest(eventId, userId) {
 	const [interested, setInterested] = useState(false)
+	const [count, setCount] = useState(0)
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
-		if (!eventId || !userId) {
+		if (!eventId) {
 			setInterested(false)
+			setCount(0)
 			setLoading(false)
 			return
 		}
@@ -19,12 +25,16 @@ function useInterest(eventId, userId) {
 			setLoading(true)
 
 			try {
-				const interestedValue = await isInterested(eventId, userId)
+				const interestCount = await getInterestCount(eventId)
+				const interestedValue = userId
+					? await isInterested(eventId, userId)
+					: false
 
 				if (!isMounted) {
 					return
 				}
 
+				setCount(interestCount)
 				setInterested(interestedValue)
 			} finally {
 				if (isMounted) {
@@ -50,13 +60,20 @@ function useInterest(eventId, userId) {
 		try {
 			const nextInterested = await toggleInterest(eventId, userId)
 			setInterested(nextInterested)
+			setCount((previousCount) => {
+				if (nextInterested) {
+					return previousCount + 1
+				}
+
+				return Math.max(0, previousCount - 1)
+			})
 			return nextInterested
 		} finally {
 			setLoading(false)
 		}
 	}
 
-	return { interested, loading, toggle }
+	return { interested, count, loading, toggle }
 }
 
 export { useInterest }

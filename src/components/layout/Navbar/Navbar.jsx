@@ -17,7 +17,7 @@ function Navbar() {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   const navItems = user
-    ? baseNavItems
+    ? [...baseNavItems, { to: '/mis-intereses', label: 'Mis intereses' }]
     : [...baseNavItems, { to: '/login', label: 'Ingresar' }, { to: '/register', label: 'Registrarse' }]
 
   async function handleLogout() {

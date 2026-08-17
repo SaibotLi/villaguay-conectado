@@ -11,6 +11,7 @@ import Community from '../pages/Community/Community'
 import About from '../pages/About/About'
 import Contact from '../pages/Contact/Contact'
 import Admin from '../pages/Admin/Admin'
+import MyInterests from '../pages/MyInterests/MyInterests'
 import NotFound from '../pages/NotFound/NotFound'
 import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute'
 
@@ -28,6 +29,14 @@ function AppRouter() {
 					<Route path="comunidad" element={<Community />} />
 					<Route path="sobre" element={<About />} />
 					<Route path="contacto" element={<Contact />} />
+					<Route
+						path="mis-intereses"
+						element={(
+							<ProtectedRoute>
+								<MyInterests />
+							</ProtectedRoute>
+						)}
+					/>
 					<Route
 						path="admin"
 						element={(

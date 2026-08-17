@@ -6,7 +6,11 @@ import styles from './InterestButton.module.css'
 function InterestButton({ eventId }) {
   const navigate = useNavigate()
   const { user } = useAuth()
-  const { interested, loading, toggle } = useInterest(eventId, user?.uid)
+  const { interested, count, loading, toggle } = useInterest(eventId, user?.uid)
+
+  const interestedLabel = count === 1
+    ? '1 persona interesada'
+    : `${count} personas interesadas`
 
   async function handleClick() {
     if (!user) {
@@ -18,9 +22,12 @@ function InterestButton({ eventId }) {
   }
 
   return (
-    <button type="button" className={styles.button} onClick={handleClick} disabled={loading}>
-      {interested ? '💖 Ya te interesa' : '❤️ Me interesa'}
-    </button>
+    <div className={styles.container}>
+      <button type="button" className={styles.button} onClick={handleClick} disabled={loading}>
+        {interested ? '💖 Ya te interesa' : '❤️ Me interesa'}
+      </button>
+      <p className={styles.count}>{interestedLabel}</p>
+    </div>
   )
 }
 

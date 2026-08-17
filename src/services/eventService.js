@@ -2,6 +2,7 @@ import {
 	addDoc,
 	collection,
 	deleteDoc,
+	documentId,
 	doc,
 	getDoc,
 	getDocs,
@@ -102,6 +103,39 @@ async function getEventById(id) {
 	return mapEventDocument(eventSnapshot)
 }
 
+// Obtiene un conjunto especifico de eventos a partir de sus ids.
+async function getEventsByIds(eventIds) {
+	if (!eventIds || eventIds.length === 0) {
+		return []
+	}
+
+	const eventsRef = collection(db, 'events')
+	const chunks = []
+
+	for (let index = 0; index < eventIds.length; index += 10) {
+		chunks.push(eventIds.slice(index, index + 10))
+	}
+
+	const snapshots = await Promise.all(
+		chunks.map((idsChunk) => {
+			const eventsByIdsQuery = query(eventsRef, where(documentId(), 'in', idsChunk))
+			return getDocs(eventsByIdsQuery)
+		}),
+	)
+
+	const eventsById = new Map()
+
+	for (const snapshot of snapshots) {
+		for (const eventDocument of snapshot.docs) {
+			eventsById.set(eventDocument.id, mapEventDocument(eventDocument))
+		}
+	}
+
+	return eventIds
+		.map((eventId) => eventsById.get(eventId))
+		.filter(Boolean)
+}
+
 // Crea una propuesta de evento y la guarda siempre con estado pendiente de revision.
 async function createEvent(eventData) {
 	const eventsRef = collection(db, 'events')
@@ -132,5 +166,6 @@ export {
 	deleteEvent,
 	updateEvent,
 	getEventById,
+	getEventsByIds,
 	createEvent,
 }
