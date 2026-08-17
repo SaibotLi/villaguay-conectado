@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
+import EventImage from '../EventImage/EventImage'
 import styles from './EventCard.module.css'
 
 function EventCard({ event }) {
   return (
     <article className={styles.card}>
+      <EventImage event={event} />
       <h2 className={styles.title}>{event.title}</h2>
       <p className={styles.description}>{event.description}</p>
       <p className={styles.meta}>Ubicacion: {event.location}</p>

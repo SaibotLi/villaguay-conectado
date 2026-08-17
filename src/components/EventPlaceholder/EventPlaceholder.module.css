@@ -1,0 +1,49 @@
+.placeholder {
+  height: 100%;
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  padding: 0.8rem;
+  border: 1px solid #a9c3e4;
+  border-radius: 8px;
+  background: linear-gradient(160deg, #e6f1ff 0%, #f3f7ff 46%, #eefaf6 100%);
+}
+
+.badge {
+  justify-self: start;
+  border: 1px solid #6d8cb2;
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.75rem;
+  color: #223a58;
+  background: #ffffffaa;
+}
+
+.title {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #1f2f46;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.metaRow {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.metaLabel,
+.metaValue {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #2b3e59;
+}
+
+.metaLabel {
+  font-weight: 600;
+}
