@@ -64,7 +64,7 @@ Estructura base en src:
 Submodulos relevantes ya definidos:
 
 - components/common, components/layout, components/forms, components/event, components/ui
-- pages/Home, pages/Events, pages/EventDetail, pages/CreateEvent, pages/Login, pages/Register, pages/Contact, pages/About, pages/Community, pages/Admin, pages/NotFound
+- pages/Home, pages/Events, pages/EventDetail, pages/CreateEvent, pages/Login, pages/Register, pages/Contact, pages/About, pages/Admin, pages/NotFound
 - firebase/config.js, firebase/auth.js, firebase/firestore.js, firebase/storage.js
 - services/authService.js, services/eventService.js
 - hooks/useAuth.js, hooks/useEvents.js
@@ -152,7 +152,7 @@ Este archivo funciona como contexto permanente para prompts cortos.
 
 Ejemplos de uso:
 
-- "Basandote en docs/AI_CONTEXT.md, implementa Login respetando CSS Modules y arquitectura."
-- "Basandote en docs/AI_CONTEXT.md, implementa eventService.js con Firestore dentro del alcance MVP."
+- "Basandote en docs/ARCHITECTURE.md, implementa Login respetando CSS Modules y arquitectura."
+- "Basandote en docs/ARCHITECTURE.md, implementa eventService.js con Firestore dentro del alcance MVP."
 
 Si hay conflicto entre una solicitud puntual y estas reglas, priorizar este documento y pedir confirmacion antes de aplicar cambios estructurales.

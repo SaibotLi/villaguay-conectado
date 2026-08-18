@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Button from '../ui/Button/Button'
 import styles from './ShareButton.module.css'
 
 function ShareButton({ title, eventId }) {
@@ -25,9 +26,9 @@ function ShareButton({ title, eventId }) {
 
   return (
     <div className={styles.container}>
-      <button type="button" className={styles.button} onClick={handleShare}>
+      <Button type="button" variant="secondary" onClick={handleShare}>
         Compartir evento
-      </button>
+      </Button>
       {feedbackMessage ? <p className={styles.feedback}>{feedbackMessage}</p> : null}
     </div>
   )

@@ -1,49 +1,30 @@
 .page {
   display: grid;
-  gap: 0.5rem;
+  gap: var(--space-5);
+  padding-block: var(--space-6);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.message {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 640px;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
 }
 
 .form {
   display: grid;
-  gap: 0.75rem;
-  max-width: 620px;
-}
-
-.field {
-  display: grid;
-  gap: 0.3rem;
-}
-
-.field input,
-.field textarea {
-  border: 1px solid #cfcfcf;
-  border-radius: 6px;
-  padding: 0.5rem 0.6rem;
-  font: inherit;
-}
-
-.submitButton {
-  justify-self: start;
-  border: 1px solid #2b2b2b;
-  border-radius: 6px;
-  padding: 0.45rem 0.75rem;
-  background: #2b2b2b;
-  color: #ffffff;
-  font: inherit;
-  cursor: pointer;
-}
-
-.submitButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.feedback {
-  margin: 0;
-  color: #7a1f1f;
-}
-
-.success {
-  margin: 0;
-  color: #1f6d2e;
+  gap: var(--space-4);
 }

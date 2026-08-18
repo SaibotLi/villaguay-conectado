@@ -69,8 +69,10 @@ function CreateEvent() {
   if (loading) {
     return (
       <section className={styles.page}>
-        <h1>Proponer evento</h1>
-        <p>Cargando...</p>
+        <header className={styles.header}>
+          <h1>Proponer evento</h1>
+        </header>
+        <p className={styles.message}>Cargando...</p>
       </section>
     )
   }
@@ -83,6 +85,7 @@ function CreateEvent() {
       onSubmit={handleSubmit}
       submitLabel="Proponer evento"
       submittingLabel="Enviando..."
+      submitVariant="accent"
       isSubmitting={isSubmitting}
       isFormDisabled={!user}
       helperMessage={!user ? 'Debes iniciar sesion para enviar una propuesta.' : ''}

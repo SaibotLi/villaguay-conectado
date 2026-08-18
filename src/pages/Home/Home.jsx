@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useEvents } from '../../hooks/useEvents'
 import EventCard from '../../components/event/EventCard'
+import Button from '../../components/ui/Button/Button'
 import styles from './Home.module.css'
 
 const RECENT_EVENTS_LIMIT = 3
@@ -32,12 +33,12 @@ function Home() {
           Descubri todos los eventos de la ciudad en un solo lugar.
         </p>
         <div className={styles.actions}>
-          <Link to="/eventos" className={styles.primaryButton}>
+          <Button as={Link} to="/eventos" variant="primary" className={styles.heroButton}>
             Explorar eventos
-          </Link>
-          <Link to="/proponer-evento" className={styles.accentButton}>
+          </Button>
+          <Button as={Link} to="/proponer-evento" variant="accent" className={styles.heroButton}>
             Proponer evento
-          </Link>
+          </Button>
         </div>
       </section>
 

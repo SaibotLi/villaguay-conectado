@@ -4,7 +4,7 @@ function Contact() {
   return (
     <section className={styles.page}>
       <h1>Contacto</h1>
-      <p>Esta funcionalidad sera implementada en proximas etapas.</p>
+      <p className={styles.message}>Esta funcionalidad sera implementada en proximas etapas.</p>
     </section>
   )
 }

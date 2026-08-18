@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import { useInterest } from '../../hooks/useInterest'
+import Button from '../ui/Button/Button'
 import styles from './InterestButton.module.css'
 
 function InterestButton({ eventId }) {
@@ -23,9 +24,9 @@ function InterestButton({ eventId }) {
 
   return (
     <div className={styles.container}>
-      <button type="button" className={styles.button} onClick={handleClick} disabled={loading}>
+      <Button type="button" variant="accent" onClick={handleClick} disabled={loading}>
         {interested ? '💖 Ya te interesa' : '❤️ Me interesa'}
-      </button>
+      </Button>
       <p className={styles.count}>{interestedLabel}</p>
     </div>
   )

@@ -7,7 +7,6 @@ import CreateEvent from '../pages/CreateEvent/CreateEvent'
 import EditEvent from '../pages/EditEvent/EditEvent'
 import Login from '../pages/Login/Login'
 import Register from '../pages/Register/Register'
-import Community from '../pages/Community/Community'
 import About from '../pages/About/About'
 import Contact from '../pages/Contact/Contact'
 import Admin from '../pages/Admin/Admin'
@@ -26,7 +25,6 @@ function AppRouter() {
 					<Route path="proponer-evento" element={<CreateEvent />} />
 					<Route path="login" element={<Login />} />
 					<Route path="register" element={<Register />} />
-					<Route path="comunidad" element={<Community />} />
 					<Route path="sobre" element={<About />} />
 					<Route path="contacto" element={<Contact />} />
 					<Route

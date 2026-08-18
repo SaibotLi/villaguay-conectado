@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import FormField from '../../components/ui/FormField/FormField'
+import Button from '../../components/ui/Button/Button'
+import Alert from '../../components/ui/Alert/Alert'
 import styles from './Register.module.css'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -72,49 +75,50 @@ function Register() {
 
   return (
     <section className={styles.page}>
-      <h1>Registro</h1>
+      <header className={styles.header}>
+        <h1>Registro</h1>
+        <p className={styles.subtitle}>Creá tu cuenta para proponer eventos y guardar tus favoritos.</p>
+      </header>
 
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <label className={styles.field}>
-          <span>Nombre completo</span>
-          <input
+      <div className={styles.card}>
+        <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <FormField
+            label="Nombre completo"
+            name="fullName"
             type="text"
             value={fullName}
             onChange={(event) => setFullName(event.target.value)}
             autoComplete="name"
+            required
           />
-        </label>
 
-        <label className={styles.field}>
-          <span>Correo electronico</span>
-          <input
+          <FormField
+            label="Correo electrónico"
+            name="email"
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
+            required
           />
-        </label>
 
-        <label className={styles.field}>
-          <span>Contraseña</span>
-          <input
+          <FormField
+            label="Contraseña"
+            name="password"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="new-password"
+            required
           />
-        </label>
 
-        {errorMessage ? (
-          <p className={styles.error} role="alert">
-            {errorMessage}
-          </p>
-        ) : null}
+          {errorMessage ? <Alert variant="error">{errorMessage}</Alert> : null}
 
-        <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-          {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
-        </button>
-      </form>
+          <Button type="submit" variant="primary" disabled={isSubmitting}>
+            {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
+          </Button>
+        </form>
+      </div>
     </section>
   )
 }

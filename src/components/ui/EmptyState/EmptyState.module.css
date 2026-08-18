@@ -1,0 +1,22 @@
+.emptyState {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: center;
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+}
+
+.title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.description {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}

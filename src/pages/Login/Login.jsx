@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import FormField from '../../components/ui/FormField/FormField'
+import Button from '../../components/ui/Button/Button'
+import Alert from '../../components/ui/Alert/Alert'
 import styles from './Login.module.css'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -67,39 +70,40 @@ function Login() {
 
   return (
     <section className={styles.page}>
-      <h1>Ingresar</h1>
+      <header className={styles.header}>
+        <h1>Ingresar</h1>
+        <p className={styles.subtitle}>Accede a tu cuenta para gestionar tus intereses y propuestas.</p>
+      </header>
 
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <label className={styles.field}>
-          <span>Correo electrónico</span>
-          <input
+      <div className={styles.card}>
+        <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <FormField
+            label="Correo electrónico"
+            name="email"
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
+            required
           />
-        </label>
 
-        <label className={styles.field}>
-          <span>Contraseña</span>
-          <input
+          <FormField
+            label="Contraseña"
+            name="password"
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="current-password"
+            required
           />
-        </label>
 
-        {errorMessage ? (
-          <p className={styles.error} role="alert">
-            {errorMessage}
-          </p>
-        ) : null}
+          {errorMessage ? <Alert variant="error">{errorMessage}</Alert> : null}
 
-        <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-          {isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
-        </button>
-      </form>
+          <Button type="submit" variant="primary" disabled={isSubmitting}>
+            {isSubmitting ? 'Iniciando sesión...' : 'Iniciar sesión'}
+          </Button>
+        </form>
+      </div>
     </section>
   )
 }

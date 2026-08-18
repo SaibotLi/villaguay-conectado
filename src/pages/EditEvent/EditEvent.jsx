@@ -64,8 +64,10 @@ function EditEvent() {
   if (loading) {
     return (
       <section className={styles.page}>
-        <h1>Editar evento</h1>
-        <p>Cargando...</p>
+        <header className={styles.header}>
+          <h1>Editar evento</h1>
+        </header>
+        <p className={styles.message}>Cargando...</p>
       </section>
     )
   }
@@ -73,8 +75,10 @@ function EditEvent() {
   if (error) {
     return (
       <section className={styles.page}>
-        <h1>Editar evento</h1>
-        <p className={styles.feedback}>Ocurrio un problema al cargar el evento. Intenta nuevamente.</p>
+        <header className={styles.header}>
+          <h1>Editar evento</h1>
+        </header>
+        <p className={styles.message}>Ocurrio un problema al cargar el evento. Intenta nuevamente.</p>
       </section>
     )
   }
@@ -82,8 +86,10 @@ function EditEvent() {
   if (!event) {
     return (
       <section className={styles.page}>
-        <h1>Editar evento</h1>
-        <p className={styles.feedback}>No se encontro el evento solicitado.</p>
+        <header className={styles.header}>
+          <h1>Editar evento</h1>
+        </header>
+        <p className={styles.message}>No se encontro el evento solicitado.</p>
       </section>
     )
   }

@@ -1,40 +1,29 @@
 .page {
   display: grid;
-  gap: 0.75rem;
+  gap: var(--space-5);
+  padding-block: var(--space-6);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+}
+
+.card {
+  max-width: 28rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
 }
 
 .form {
   display: grid;
-  gap: 0.75rem;
-  max-width: 28rem;
-}
-
-.field {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.field input {
-  border: 1px solid #d0d0d0;
-  border-radius: 4px;
-  padding: 0.55rem 0.65rem;
-  font: inherit;
-}
-
-.submitButton {
-  width: fit-content;
-  border: 1px solid #d0d0d0;
-  background: #f6f6f6;
-  padding: 0.55rem 0.8rem;
-  cursor: pointer;
-}
-
-.submitButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.error {
-  margin: 0;
-  color: #b00020;
+  gap: var(--space-4);
 }

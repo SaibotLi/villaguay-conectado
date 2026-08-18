@@ -1,10 +1,23 @@
 .page {
   display: grid;
-  gap: 0.5rem;
+  gap: var(--space-5);
+  padding-block: var(--space-6);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 16px;
 }
 
 .message {
   margin: 0;
+  color: var(--color-text-secondary);
 }
 
 .list {
@@ -12,7 +25,8 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.75rem;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
 .item {

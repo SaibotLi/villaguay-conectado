@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../../hooks/useAuth'
 import containerStyles from '../../../styles/container.module.css'
+import isotype from '../../../assets/branding/isotype.png'
+import Button from '../../ui/Button/Button'
 import styles from './Navbar.module.css'
 
 const baseNavItems = [
   { to: '/', label: 'Inicio', end: true },
   { to: '/eventos', label: 'Eventos' },
-  { to: '/comunidad', label: 'Comunidad' },
   { to: '/sobre', label: 'Sobre' },
   { to: '/contacto', label: 'Contacto' },
 ]
@@ -37,6 +38,7 @@ function Navbar() {
     <header className={styles.header}>
       <div className={`${containerStyles.container} ${styles.inner}`}>
         <Link to="/" className={styles.brand}>
+          <img src={isotype} alt="" className={styles.brandMark} />
           VillaguayConectado
         </Link>
 
@@ -62,14 +64,9 @@ function Navbar() {
           <div className={styles.authArea}>
             {/* Actualiza la barra cuando cambia el usuario autenticado. */}
             <span className={styles.userText}>Hola, {user.displayName || user.email}</span>
-            <button
-              type="button"
-              onClick={handleLogout}
-              disabled={isLoggingOut}
-              className={styles.logoutButton}
-            >
+            <Button type="button" variant="secondary" onClick={handleLogout} disabled={isLoggingOut}>
               {isLoggingOut ? 'Cerrando...' : 'Cerrar sesión'}
-            </button>
+            </Button>
           </div>
         ) : null}
       </div>

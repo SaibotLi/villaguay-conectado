@@ -1,4 +1,11 @@
 .page {
   display: grid;
-  gap: 0.5rem;
+  gap: var(--space-2);
+  padding-block: var(--space-6);
+}
+
+.message {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 16px;
 }

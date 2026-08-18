@@ -4,6 +4,8 @@ import { usePendingEvents } from '../../hooks/usePendingEvents'
 import { useApprovedEvents } from '../../hooks/useApprovedEvents'
 import AdminEventCard from '../../components/event/AdminEventCard'
 import AdminPublishedEventCard from '../../components/event/AdminPublishedEventCard'
+import Alert from '../../components/ui/Alert/Alert'
+import EmptyState from '../../components/ui/EmptyState/EmptyState'
 
 function Admin() {
   const {
@@ -44,17 +46,37 @@ function Admin() {
 
   return (
     <section className={styles.page}>
-      <h1>Panel de administracion</h1>
-      {feedbackMessage ? <p className={styles.feedback}>{feedbackMessage}</p> : null}
+      <header className={styles.header}>
+        <h1>Panel de administración</h1>
+        <p className={styles.subtitle}>Moderá, aprobá y gestioná los eventos de VillaguayConectado.</p>
+      </header>
+
+      <div className={styles.summary}>
+        <div className={styles.statCard}>
+          <p className={styles.statLabel}>Eventos pendientes</p>
+          <p className={styles.statValue}>{pendingEvents.length}</p>
+        </div>
+        <div className={styles.statCard}>
+          <p className={styles.statLabel}>Eventos publicados</p>
+          <p className={styles.statValue}>{approvedEvents.length}</p>
+        </div>
+      </div>
+
+      {feedbackMessage ? <Alert variant="success">{feedbackMessage}</Alert> : null}
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Eventos pendientes</h2>
         {pendingLoading ? <p className={styles.message}>Cargando eventos...</p> : null}
-        {pendingError ? (
-          <p className={styles.message}>Ocurrio un problema al cargar los eventos pendientes. Intenta nuevamente en unos minutos.</p>
+        {!pendingLoading && pendingError ? (
+          <Alert variant="error">
+            Ocurrio un problema al cargar los eventos pendientes. Intenta nuevamente en unos minutos.
+          </Alert>
         ) : null}
         {!pendingLoading && !pendingError && pendingEvents.length === 0 ? (
-          <p className={styles.message}>No hay eventos pendientes.</p>
+          <EmptyState
+            title="No hay eventos pendientes"
+            description="Las nuevas propuestas de la comunidad van a aparecer aca para su revision."
+          />
         ) : null}
         {!pendingLoading && !pendingError && pendingEvents.length > 0 ? (
           <ul className={styles.list}>
@@ -70,11 +92,16 @@ function Admin() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Eventos publicados</h2>
         {approvedLoading ? <p className={styles.message}>Cargando eventos...</p> : null}
-        {approvedError ? (
-          <p className={styles.message}>Ocurrio un problema al cargar los eventos publicados. Intenta nuevamente en unos minutos.</p>
+        {!approvedLoading && approvedError ? (
+          <Alert variant="error">
+            Ocurrio un problema al cargar los eventos publicados. Intenta nuevamente en unos minutos.
+          </Alert>
         ) : null}
         {!approvedLoading && !approvedError && approvedEvents.length === 0 ? (
-          <p className={styles.message}>No hay eventos publicados.</p>
+          <EmptyState
+            title="No hay eventos publicados"
+            description="Los eventos aprobados van a aparecer aca y quedaran visibles para la comunidad."
+          />
         ) : null}
         {!approvedLoading && !approvedError && approvedEvents.length > 0 ? (
           <ul className={styles.list}>

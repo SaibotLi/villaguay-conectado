@@ -1,7 +1,9 @@
 import { Link, useParams } from 'react-router-dom'
 import { useEvent } from '../../hooks/useEvent'
+import EventImage from '../../components/EventImage/EventImage'
 import InterestButton from '../../components/event/InterestButton'
 import ShareButton from '../../components/event/ShareButton'
+import Button from '../../components/ui/Button/Button'
 import styles from './EventDetail.module.css'
 
 function EventDetail() {
@@ -42,29 +44,39 @@ function EventDetail() {
 
   return (
     <section className={styles.page}>
+      <Link to="/eventos" className={styles.backLink}>
+        ← Volver a eventos
+      </Link>
+
       <article className={styles.card}>
-        <h1 className={styles.title}>{event.title}</h1>
-        <p className={styles.description}>{event.description}</p>
+        <EventImage event={event} />
 
-        <div className={styles.metaGroup}>
-          <p className={styles.meta}>Ubicacion: {event.location}</p>
-          <p className={styles.meta}>Fecha: {event.date}</p>
-          <p className={styles.meta}>Hora: {event.time}</p>
+        <div className={styles.content}>
+          <h1 className={styles.title}>{event.title}</h1>
+
+          <div className={styles.metaGroup}>
+            <p className={styles.meta}>📅 {event.date} · {event.time}</p>
+            <p className={styles.meta}>📍 {event.location}</p>
+          </div>
+
+          <p className={styles.description}>{event.description}</p>
+
+          <div className={styles.actions}>
+            <InterestButton eventId={event.id} />
+            <ShareButton title={event.title} eventId={event.id} />
+            {event.mapsUrl ? (
+              <Button
+                as="a"
+                href={event.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+              >
+                Ver en Google Maps
+              </Button>
+            ) : null}
+          </div>
         </div>
-
-        {event.mapsUrl ? (
-          <a
-            href={event.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.mapsButton}
-          >
-            Ver ubicacion en Google Maps
-          </a>
-        ) : null}
-
-        <InterestButton eventId={event.id} />
-        <ShareButton title={event.title} eventId={event.id} />
       </article>
     </section>
   )
