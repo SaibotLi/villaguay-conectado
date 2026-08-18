@@ -101,3 +101,25 @@
 .recentEventsItem {
   margin: 0;
 }
+
+@media (max-width: 640px) {
+  .hero {
+    padding-block: var(--space-6);
+  }
+
+  .reasons,
+  .recentEvents {
+    padding-block: var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heroButton {
+    width: 100%;
+  }
+}

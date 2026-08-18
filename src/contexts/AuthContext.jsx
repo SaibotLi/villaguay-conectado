@@ -2,9 +2,12 @@ import { createContext, useEffect, useMemo, useState } from 'react'
 import {
 	getUserProfile,
 	login,
+	loginWithGoogle,
 	logout,
 	observeAuthState,
 	register,
+	resendVerificationEmail,
+	sendPasswordReset,
 } from '../services/authService'
 
 const AuthContext = createContext(null)
@@ -54,7 +57,10 @@ function AuthProvider({ children }) {
 			loading,
 			register,
 			login,
+			loginWithGoogle,
 			logout,
+			resendVerificationEmail,
+			sendPasswordReset,
 		}),
 		[user, loading],
 	)

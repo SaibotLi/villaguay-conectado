@@ -9,3 +9,9 @@
   color: var(--color-text-secondary);
   font-size: 16px;
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding-block: var(--space-5);
+  }
+}

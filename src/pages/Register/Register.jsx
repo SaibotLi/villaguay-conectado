@@ -23,13 +23,14 @@ function mapFirebaseError(errorCode) {
 
 function Register() {
   const navigate = useNavigate()
-  const { register } = useAuth()
+  const { register, loginWithGoogle } = useAuth()
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
 
   function validateForm() {
     if (!fullName.trim() || !email.trim() || !password.trim()) {
@@ -61,15 +62,32 @@ function Register() {
     setIsSubmitting(true)
 
     try {
-      // Solicita el registro utilizando el contexto de autenticacion.
+      // Solicita el registro; el service envia la verificacion y cierra la sesion.
       await register(email.trim(), password, fullName.trim())
 
-      // Redirige al inicio y deja que AuthContext refleje la nueva sesion.
-      navigate('/')
+      navigate('/login', { state: { registeredSuccessfully: true } })
     } catch (error) {
       setErrorMessage(mapFirebaseError(error.code))
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  async function handleGoogleLogin() {
+    setErrorMessage('')
+    setIsGoogleSubmitting(true)
+
+    try {
+      await loginWithGoogle()
+      navigate('/')
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+        return
+      }
+
+      setErrorMessage('No se pudo crear la cuenta con Google. Intenta nuevamente.')
+    } finally {
+      setIsGoogleSubmitting(false)
     }
   }
 
@@ -116,6 +134,17 @@ function Register() {
 
           <Button type="submit" variant="primary" disabled={isSubmitting}>
             {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
+          </Button>
+
+          <p className={styles.divider}>o</p>
+
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleGoogleLogin}
+            disabled={isGoogleSubmitting}
+          >
+            {isGoogleSubmitting ? 'Conectando...' : 'Continuar con Google'}
           </Button>
         </form>
       </div>

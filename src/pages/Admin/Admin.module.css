@@ -72,3 +72,9 @@
 .item {
   margin: 0;
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding-block: var(--space-5);
+  }
+}

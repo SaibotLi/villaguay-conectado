@@ -1,158 +1,268 @@
-# Nombre del proyecto
+# AI Context
+
+## Nombre del proyecto
 
 VillaguayConectado
 
-## Descripcion breve
+---
 
-VillaguayConectado es una aplicacion web para centralizar la difusion de eventos locales de la ciudad de Villaguay.
+# Descripción
 
-El objetivo del MVP es publicar, descubrir y gestionar eventos en una primera version funcional, con autenticacion de usuarios, interaccion basica y un panel administrativo inicial.
+VillaguayConectado es una aplicación web destinada a centralizar la difusión de eventos locales de la ciudad de Villaguay.
 
-## Stack tecnologico
+El proyecto nació como Trabajo Final Integrador de la Tecnicatura Universitaria en Informática Aplicada al Diseño Multimedia y de Sitios Web (UNL), pero desde el inicio fue diseñado con una visión de producto real, priorizando una arquitectura escalable, mantenible y reutilizable.
 
-- React + Vite
+El objetivo del MVP no es desarrollar muchas funcionalidades, sino resolver correctamente el módulo de eventos con una excelente experiencia de usuario y una base técnica sólida para futuras versiones.
+
+---
+
+# Estado actual del proyecto
+
+Actualmente el proyecto ya posee implementadas las siguientes funcionalidades:
+
+## Arquitectura
+
+- Arquitectura desacoplada React → Services → Firebase
+- Separación de responsabilidades
+- CSS Modules
+- Componentes reutilizables
+- Design System propio
+- Branding inicial
+- Responsive
+
+## Autenticación
+
+- Registro mediante Email/Password
+- Inicio de sesión
+- Google Login
+- Verificación de correo electrónico
+- Recuperación de contraseña
+- Roles (admin / user)
+- Protected Routes
+
+## Eventos
+
+- Listado de eventos
+- Detalle de evento
+- Compartir evento
+- Google Maps
+- Sistema "Me interesa"
+- Mis intereses
+- Propuesta de eventos
+
+## Administración
+
+- Aprobar eventos
+- Rechazar eventos
+- Editar eventos
+- Eliminar eventos
+- Dashboard administrativo
+
+---
+
+# Stack tecnológico
+
+Frontend
+
+- React
+- Vite
 - JavaScript
 - React Router DOM
 - CSS Modules
+
+Backend
+
 - Firebase Authentication
 - Cloud Firestore
-- Firebase Storage
-- Git
-- GitHub
+
+Media (actual)
+
+- Próxima implementación (Epic Event Media)
+
+Deploy
+
 - Vercel
 
-## Alcance del MVP
+Control de versiones
 
-Funcionalidades incluidas en el MVP:
+- Git
+- GitHub
 
-- Inicio
-- Listado de eventos
-- Detalle de evento
-- Registro
-- Inicio de sesion
-- Propuesta de eventos
-- Panel de administracion
-- Boton "Me interesa"
-- Compartir evento
+Asistencia IA
 
-Funcionalidades fuera del MVP (no implementar en esta etapa):
+- GitHub Copilot
+- ChatGPT
 
-- Noticias
-- Comercios
-- Servicios
-- Marketplace
-- Sistema de puntos
-- Cualquier modulo no listado en el alcance del MVP
+---
 
-## Arquitectura del proyecto
+# Filosofía del proyecto
 
-Estructura base en src:
+Toda decisión técnica debe respetar los siguientes principios.
 
-- assets: recursos estaticos (imagenes, iconos, fuentes)
-- components: componentes reutilizables de UI y bloques funcionales
-- pages: vistas de ruta (pantallas)
-- layouts: layouts base de la aplicacion
-- routes: configuracion de enrutamiento
-- firebase: capa de acceso base a Firebase (config + modulos)
-- services: logica de acceso a datos y reglas de interaccion con backend
-- hooks: hooks personalizados para encapsular estado y comportamiento
-- contexts: contextos globales de React
-- types: definiciones de estructuras de datos del proyecto (en JS, como referencia documental)
-- utils: utilidades puras y helpers
-- styles: estilos globales compartidos
+## Simplicidad
 
-Submodulos relevantes ya definidos:
+Implementar únicamente aquello que aporte valor real al MVP.
 
-- components/common, components/layout, components/forms, components/event, components/ui
-- pages/Home, pages/Events, pages/EventDetail, pages/CreateEvent, pages/Login, pages/Register, pages/Contact, pages/About, pages/Admin, pages/NotFound
-- firebase/config.js, firebase/auth.js, firebase/firestore.js, firebase/storage.js
-- services/authService.js, services/eventService.js
-- hooks/useAuth.js, hooks/useEvents.js
-- contexts/AuthContext.jsx
+Evitar sobreingeniería.
 
-## Flujo de datos
+---
 
-Regla obligatoria: los componentes React no deben comunicarse directamente con Firebase.
+## Escalabilidad
 
-Flujo oficial del proyecto:
+Cada módulo debe poder evolucionar sin reescribir el proyecto completo.
 
-React -> Services -> Firebase -> Firestore / Storage / Authentication
+---
 
-Criterio:
+## Reutilización
 
-- Pages y components consumen hooks/contexts/services.
-- Services centralizan llamadas a Firebase y transformacion de datos.
-- Firebase modules encapsulan inicializacion y acceso a SDK.
+Siempre que sea posible se crearán componentes reutilizables antes que soluciones específicas.
 
-## Regla de Autenticacion
+---
 
-Ningun componente React (Pages o Components) puede importar directamente funciones del SDK de Firebase Authentication.
+## Separación de responsabilidades
 
-Toda interaccion con Firebase Authentication debe respetar este flujo:
+Cada archivo tiene una única responsabilidad.
 
-Pages / Components -> useAuth() -> AuthContext -> AuthService -> Firebase Authentication
+---
 
-Esta regla es obligatoria para todo el proyecto.
+## Consistencia
 
-## Modelo de datos
+Toda nueva funcionalidad debe respetar el Design System, la arquitectura y los patrones ya existentes.
 
-Colecciones principales (nivel conceptual inicial):
+---
 
-- users
-- events
-- interests
+# Arquitectura oficial
 
-Nota: el detalle completo de campos, indices y validaciones se definira por iteraciones, manteniendo consistencia con el alcance del MVP.
+Todo acceso a Firebase debe seguir obligatoriamente el siguiente flujo:
 
-## Convenciones
+React
 
-- Componentes en PascalCase
-- Variables y funciones en camelCase
-- Colecciones de Firestore en ingles
-- CSS Modules para estilos de componentes
-- Un componente por carpeta cuando corresponda
-- Evitar duplicacion de codigo
-- Mantener imports ordenados y responsabilidad clara por modulo
+↓
 
-## Principios de desarrollo
+Hooks / Context
 
-El proyecto prioriza:
+↓
 
-- simplicidad
-- escalabilidad
-- reutilizacion
-- codigo legible
-- separacion de responsabilidades
+Services
 
-Lineamientos practicos:
+↓
 
-- implementar solo lo necesario para el alcance actual
-- evitar sobreingenieria
-- preferir composicion y reutilizacion antes que duplicar logica
-- mantener interfaces de servicios claras y estables
+Firebase
 
-## Reglas para la IA
+↓
 
-Reglas obligatorias para cualquier asistente de IA que trabaje en este repositorio:
+Authentication / Firestore / Storage Provider
 
-- Respetar la arquitectura existente.
-- No modificar nombres de carpetas ni estructura base sin aprobacion previa.
-- No agregar dependencias sin autorizacion explicita.
-- No cambiar tecnologias definidas en el stack.
-- No inventar nuevas funcionalidades fuera del MVP.
-- Proponer mejoras antes de implementarlas.
-- Generar codigo limpio y comentado solo cuando sea necesario.
-- Respetar siempre el alcance del MVP.
-- Evitar cambios masivos no solicitados.
-- Mantener separacion de responsabilidades entre pages, components, services y firebase.
+React nunca debe importar directamente funciones del SDK de Firebase.
 
-## Uso recomendado de este documento
+---
 
-Este archivo funciona como contexto permanente para prompts cortos.
+# Organización del proyecto
 
-Ejemplos de uso:
+src/
 
-- "Basandote en docs/ARCHITECTURE.md, implementa Login respetando CSS Modules y arquitectura."
-- "Basandote en docs/ARCHITECTURE.md, implementa eventService.js con Firestore dentro del alcance MVP."
+assets/
 
-Si hay conflicto entre una solicitud puntual y estas reglas, priorizar este documento y pedir confirmacion antes de aplicar cambios estructurales.
+components/
+
+pages/
+
+layouts/
+
+routes/
+
+contexts/
+
+hooks/
+
+services/
+
+firebase/
+
+styles/
+
+utils/
+
+types/
+
+---
+
+# Design System
+
+El proyecto posee un Design System propio documentado en:
+
+docs/DESIGN_SYSTEM.md
+
+Toda nueva interfaz debe respetarlo.
+
+No crear colores, botones, espaciados o componentes visuales nuevos sin antes verificar dicho documento.
+
+---
+
+# Roadmap
+
+La planificación oficial del proyecto se encuentra en:
+
+docs/ROADMAP.md
+
+Antes de implementar una nueva funcionalidad verificar que forme parte del roadmap.
+
+---
+
+# Documentación de arquitectura
+
+La arquitectura del proyecto se divide en documentos independientes.
+
+Ejemplos:
+
+docs/ARCHITECTURE/
+
+General Architecture
+
+Authentication
+
+Events
+
+Admin
+
+Interests
+
+UX
+
+Event Media
+
+Deployment
+
+Cada documento representa la única fuente de verdad para dicho módulo.
+
+---
+
+# Reglas para asistentes de IA
+
+Todo asistente que trabaje sobre este repositorio debe respetar obligatoriamente las siguientes reglas.
+
+- No modificar la arquitectura sin aprobación.
+- No agregar dependencias innecesarias.
+- No romper el Design System.
+- No duplicar componentes.
+- No acceder directamente a Firebase desde React.
+- Mantener separación Pages → Hooks → Services.
+- Priorizar reutilización.
+- Implementar únicamente el alcance solicitado.
+- Explicar mejoras antes de implementarlas.
+- Evitar cambios masivos innecesarios.
+- Mantener código legible.
+- Mantener consistencia visual.
+- Ejecutar npm run build al finalizar cada sprint.
+- Informar siempre qué archivos fueron modificados.
+- Explicar el impacto arquitectónico de los cambios.
+
+---
+
+# Visión
+
+VillaguayConectado no busca únicamente aprobar una materia.
+
+La arquitectura fue diseñada para permitir que el proyecto continúe creciendo una vez finalizada la etapa académica.
+
+Cada decisión debe intentar equilibrar simplicidad para el MVP y escalabilidad para versiones futuras.

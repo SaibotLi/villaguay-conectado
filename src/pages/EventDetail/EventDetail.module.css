@@ -27,7 +27,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .card {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
@@ -75,4 +75,14 @@
   margin: 0;
   color: var(--color-text-secondary);
   font-size: 16px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding-block: var(--space-5);
+  }
+
+  .content {
+    padding: var(--space-4);
+  }
 }

@@ -28,3 +28,13 @@
   display: grid;
   gap: var(--space-4);
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding-block: var(--space-5);
+  }
+
+  .card {
+    padding: var(--space-4);
+  }
+}
