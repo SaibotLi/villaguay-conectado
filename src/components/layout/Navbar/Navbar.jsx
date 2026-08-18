@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../../hooks/useAuth'
+import containerStyles from '../../../styles/container.module.css'
 import styles from './Navbar.module.css'
 
 const baseNavItems = [
@@ -34,22 +35,28 @@ function Navbar() {
 
   return (
     <header className={styles.header}>
-      <nav aria-label="Navegacion principal" className={styles.nav}>
-        <ul className={styles.list}>
-          {navItems.map((item) => (
-            <li key={item.to}>
-              <NavLink
-                to={item.to}
-                end={item.end}
-                className={({ isActive }) =>
-                  isActive ? `${styles.link} ${styles.active}` : styles.link
-                }
-              >
-                {item.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+      <div className={`${containerStyles.container} ${styles.inner}`}>
+        <Link to="/" className={styles.brand}>
+          VillaguayConectado
+        </Link>
+
+        <nav aria-label="Navegacion principal" className={styles.nav}>
+          <ul className={styles.list}>
+            {navItems.map((item) => (
+              <li key={item.to}>
+                <NavLink
+                  to={item.to}
+                  end={item.end}
+                  className={({ isActive }) =>
+                    isActive ? `${styles.link} ${styles.active}` : styles.link
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         {user ? (
           <div className={styles.authArea}>
@@ -65,7 +72,7 @@ function Navbar() {
             </button>
           </div>
         ) : null}
-      </nav>
+      </div>
     </header>
   )
 }

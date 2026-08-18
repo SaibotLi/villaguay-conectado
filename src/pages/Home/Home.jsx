@@ -1,41 +1,93 @@
 import { Link } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
+import { useEvents } from '../../hooks/useEvents'
+import EventCard from '../../components/event/EventCard'
 import styles from './Home.module.css'
 
-function Home() {
-  const { user } = useAuth()
+const RECENT_EVENTS_LIMIT = 3
 
-  const userStatus = user
-    ? `Bienvenido, ${user.displayName || user.email}`
-    : 'No hay ningún usuario autenticado.'
+const reasons = [
+  {
+    title: 'Eventos actualizados',
+    description: 'La agenda se mantiene al dia con las propuestas aprobadas por la comunidad.',
+  },
+  {
+    title: 'Guarda tus favoritos',
+    description: 'Marca los eventos que te interesan y encontralos facil en un solo lugar.',
+  },
+  {
+    title: 'Encontra actividades facil',
+    description: 'Toda la informacion clave de cada evento, a simple vista, sin vueltas.',
+  },
+]
+
+function Home() {
+  const { events, loading, error } = useEvents()
+  const recentEvents = events.slice(0, RECENT_EVENTS_LIMIT)
 
   return (
-    <section className={styles.page}>
-      <h1>VillaguayConectado</h1>
-      <p>
-        Plataforma para centralizar la difusion de eventos locales de la ciudad de
-        Villaguay.
-      </p>
-      <p>La funcionalidad completa sera implementada en proximas etapas.</p>
-      {/* Estado temporal para validar la sincronizacion del contexto de autenticacion. */}
-      <p className={styles.authStatus}>{userStatus}</p>
+    <div className={styles.page}>
+      <section className={styles.hero}>
+        <h1>VillaguayConectado</h1>
+        <p className={styles.subtitle}>
+          Descubri todos los eventos de la ciudad en un solo lugar.
+        </p>
+        <div className={styles.actions}>
+          <Link to="/eventos" className={styles.primaryButton}>
+            Explorar eventos
+          </Link>
+          <Link to="/proponer-evento" className={styles.accentButton}>
+            Proponer evento
+          </Link>
+        </div>
+      </section>
 
-      <nav aria-label="Accesos principales" className={styles.links}>
-        <Link to="/eventos" className={styles.link}>
-          Eventos
-        </Link>
-        <Link to="/comunidad" className={styles.link}>
-          Comunidad
-        </Link>
-        <Link to="/sobre" className={styles.link}>
-          Sobre
-        </Link>
-        <Link to="/contacto" className={styles.link}>
-          Contacto
-        </Link>
-      </nav>
-    </section>
+      <section className={styles.reasons} aria-labelledby="reasons-heading">
+        <h2 id="reasons-heading">¿Por que usar VillaguayConectado?</h2>
+        <ul className={styles.reasonsList}>
+          {reasons.map((reason) => (
+            <li key={reason.title} className={styles.reasonItem}>
+              <h3>{reason.title}</h3>
+              <p>{reason.description}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className={styles.recentEvents} aria-labelledby="recent-events-heading">
+        <div className={styles.recentEventsHeader}>
+          <h2 id="recent-events-heading">Eventos recientes</h2>
+          <Link to="/eventos" className={styles.link}>
+            Ver todos
+          </Link>
+        </div>
+
+        {loading && <p className={styles.message}>Cargando eventos...</p>}
+
+        {!loading && error && (
+          <p className={styles.message}>
+            Ocurrio un problema al cargar los eventos. Intenta nuevamente en unos minutos.
+          </p>
+        )}
+
+        {!loading && !error && recentEvents.length === 0 && (
+          <p className={styles.message}>
+            Todavia no hay eventos publicados. Volve pronto.
+          </p>
+        )}
+
+        {!loading && !error && recentEvents.length > 0 && (
+          <ul className={styles.recentEventsList}>
+            {recentEvents.map((event) => (
+              <li key={event.id} className={styles.recentEventsItem}>
+                <EventCard event={event} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
   )
 }
 
 export default Home
+
