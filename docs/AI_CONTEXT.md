@@ -29,6 +29,8 @@ Actualmente el proyecto ya posee implementadas las siguientes funcionalidades:
 - Design System propio
 - Branding inicial
 - Responsive
+- Páginas informativas (Sobre y Contacto)
+- Footer de navegación y contacto
 
 ## Autenticación
 
@@ -211,29 +213,9 @@ Antes de implementar una nueva funcionalidad verificar que forme parte del roadm
 
 # Documentación de arquitectura
 
-La arquitectura del proyecto se divide en documentos independientes.
-
-Ejemplos:
-
-docs/ARCHITECTURE/
-
-General Architecture
-
-Authentication
-
-Events
-
-Admin
-
-Interests
-
-UX
-
-Event Media
-
-Deployment
-
-Cada documento representa la única fuente de verdad para dicho módulo.
+La documentación disponible en `docs/` registra las decisiones de arquitectura, dominio,
+roadmap, diseño y media de eventos. Los documentos vigentes son la fuente de verdad para
+cada módulo que describen.
 
 ---
 

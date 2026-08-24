@@ -12,9 +12,6 @@ function useInterest(eventId, userId) {
 
 	useEffect(() => {
 		if (!eventId) {
-			setInterested(false)
-			setCount(0)
-			setLoading(false)
 			return
 		}
 
@@ -71,6 +68,10 @@ function useInterest(eventId, userId) {
 		} finally {
 			setLoading(false)
 		}
+	}
+
+	if (!eventId) {
+		return { interested: false, count: 0, loading: false, toggle }
 	}
 
 	return { interested, count, loading, toggle }

@@ -10,26 +10,32 @@ VillaguayConectado es una aplicacion web desarrollada como proyecto final de la 
 
 ## Estado del proyecto
 
-Actualmente el proyecto corresponde al avance solicitado para la primera entrega de código del Proyecto Final (aproximadamente un 50% de desarrollo).
+Actualmente el proyecto se encuentra en etapa de Release Candidate para la entrega académica del 80% del Proyecto Final.
 
 Funcionalidades implementadas:
 
 - Registro de usuarios
-- Inicio de sesión y cierre de sesión
+- Inicio de sesión, cierre de sesión y recuperación de contraseña
+- Inicio de sesión y registro con Google
+- Verificación de correo electrónico
 - Persistencia de sesión
 - Listado de eventos
 - Detalle de eventos
 - Propuesta de nuevos eventos
+- Sistema “Me interesa” y listado de intereses guardados
+- Compartir eventos y enlace opcional a Google Maps
+- Roles, rutas protegidas y panel de administración
+- Aprobación, rechazo, edición y eliminación de eventos
+- Página Sobre nosotros, Contacto y navegación responsive
 - Integración con Firebase Authentication
 - Integración con Cloud Firestore
 
 Funcionalidades pendientes:
 
-- Panel de administración
-- Aprobación y rechazo de eventos
 - Carga de imágenes (Firebase Storage)
-- Botón "Me interesa"
-- Ajustes de diseño responsive
+- Buscador y filtros de eventos
+- Integración con Google Calendar
+- Mejoras futuras de presentación y experiencia
 
 ## Estructura del proyecto
 

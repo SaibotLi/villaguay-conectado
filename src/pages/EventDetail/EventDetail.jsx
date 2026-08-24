@@ -22,7 +22,7 @@ function EventDetail() {
     return (
       <section className={styles.page}>
         <p className={styles.message}>
-          No pudimos cargar el evento en este momento. Intentalo nuevamente.
+          No pudimos cargar el evento en este momento. Intentá nuevamente.
         </p>
       </section>
     )
@@ -33,7 +33,7 @@ function EventDetail() {
       <section className={styles.page}>
         <h1 className={styles.title}>Evento no encontrado</h1>
         <p className={styles.message}>
-          El evento que buscabas no existe o ya no esta disponible.
+          El evento que buscabas no existe o ya no está disponible.
         </p>
         <Link to="/eventos" className={styles.backLink}>
           Volver al listado de eventos

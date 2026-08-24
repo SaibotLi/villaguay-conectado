@@ -9,19 +9,19 @@ function Events() {
     <section className={styles.page}>
       <header className={styles.header}>
         <h1>Eventos</h1>
-        <p className={styles.subtitle}>Descubri todo lo que esta pasando en Villaguay.</p>
+        <p className={styles.subtitle}>Descubrí todo lo que está pasando en Villaguay.</p>
       </header>
 
       {loading && <p className={styles.message}>Cargando eventos...</p>}
 
       {!loading && error && (
         <p className={styles.message}>
-          Ocurrio un problema al cargar los eventos. Intenta nuevamente en unos minutos.
+          Ocurrió un problema al cargar los eventos. Intentá nuevamente en unos minutos.
         </p>
       )}
 
       {!loading && !error && events.length === 0 && (
-        <p className={styles.message}>Todavia no hay eventos disponibles. Volve pronto.</p>
+        <p className={styles.message}>Todavía no hay eventos disponibles. Volvé pronto.</p>
       )}
 
       {!loading && !error && events.length > 0 && (

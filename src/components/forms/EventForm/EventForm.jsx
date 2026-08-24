@@ -28,7 +28,7 @@ function EventForm({
 
         <form className={styles.form} onSubmit={onSubmit}>
           <FormField
-            label="Titulo"
+            label="Título"
             name="title"
             value={formData.title}
             onChange={onChange}
@@ -37,7 +37,7 @@ function EventForm({
           />
 
           <FormField
-            label="Descripcion"
+            label="Descripción"
             name="description"
             type="textarea"
             value={formData.description}
@@ -48,7 +48,7 @@ function EventForm({
           />
 
           <FormField
-            label="Ubicacion"
+            label="Ubicación"
             name="location"
             value={formData.location}
             onChange={onChange}

@@ -69,13 +69,13 @@ function Admin() {
         {pendingLoading ? <p className={styles.message}>Cargando eventos...</p> : null}
         {!pendingLoading && pendingError ? (
           <Alert variant="error">
-            Ocurrio un problema al cargar los eventos pendientes. Intenta nuevamente en unos minutos.
+            Ocurrió un problema al cargar los eventos pendientes. Intentá nuevamente en unos minutos.
           </Alert>
         ) : null}
         {!pendingLoading && !pendingError && pendingEvents.length === 0 ? (
           <EmptyState
             title="No hay eventos pendientes"
-            description="Las nuevas propuestas de la comunidad van a aparecer aca para su revision."
+            description="Las nuevas propuestas de la comunidad van a aparecer acá para su revisión."
           />
         ) : null}
         {!pendingLoading && !pendingError && pendingEvents.length > 0 ? (
@@ -94,13 +94,13 @@ function Admin() {
         {approvedLoading ? <p className={styles.message}>Cargando eventos...</p> : null}
         {!approvedLoading && approvedError ? (
           <Alert variant="error">
-            Ocurrio un problema al cargar los eventos publicados. Intenta nuevamente en unos minutos.
+            Ocurrió un problema al cargar los eventos publicados. Intentá nuevamente en unos minutos.
           </Alert>
         ) : null}
         {!approvedLoading && !approvedError && approvedEvents.length === 0 ? (
           <EmptyState
             title="No hay eventos publicados"
-            description="Los eventos aprobados van a aparecer aca y quedaran visibles para la comunidad."
+            description="Los eventos aprobados van a aparecer acá y quedarán visibles para la comunidad."
           />
         ) : null}
         {!approvedLoading && !approvedError && approvedEvents.length > 0 ? (

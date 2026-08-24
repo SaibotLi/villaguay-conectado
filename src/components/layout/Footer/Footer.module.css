@@ -1,35 +1,104 @@
 .footer {
+  margin-top: var(--space-7);
   background: var(--color-surface-alt);
   border-top: 1px solid var(--color-border);
 }
 
 .inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  padding-block: var(--space-5);
-  text-align: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  padding-block: var(--space-7);
+}
+
+.brandColumn,
+.column {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  margin: 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--color-text);
+  width: fit-content;
+  color: var(--color-primary);
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .brandMark {
-  height: 20px;
-  width: 20px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
-.tagline {
-  margin: 0;
-  font-size: 13px;
+.description {
+  max-width: 22rem;
   color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.linkList {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linkList a,
+.bottomBar a {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.linkList a:hover,
+.bottomBar a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.bottomBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .footer {
+    margin-top: var(--space-6);
+  }
+
+  .inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+  }
+
+  .bottomBar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }

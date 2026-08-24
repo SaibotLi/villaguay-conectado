@@ -19,14 +19,14 @@ function MyInterests() {
 
       {!loading && error ? (
         <p className={styles.message}>
-          Ocurrio un problema al cargar tus eventos guardados. Intenta nuevamente en unos minutos.
+          Ocurrió un problema al cargar tus eventos guardados. Intentá nuevamente en unos minutos.
         </p>
       ) : null}
 
       {!loading && !error && events.length === 0 ? (
         <EmptyState
-          title="Todavia no tenes eventos guardados"
-          description="Marca '❤️ Me interesa' en un evento para encontrarlo rapido aca."
+          title="Todavía no tenés eventos guardados"
+          description="Marcá “❤️ Me interesa” en un evento para encontrarlo rápido acá."
         />
       ) : null}
 

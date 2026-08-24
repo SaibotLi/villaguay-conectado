@@ -36,21 +36,17 @@ El proyecto ya cuenta con una arquitectura estable, una identidad visual definid
 - Componentes reutilizables
 - Panel de Administración (Sprint UX 5)
 - Experiencia adaptativa / Responsive (Sprint UX 6)
+- Release Candidate 0: páginas informativas, navegación, footer y pulido de presentación
 
 ---
 
 ## 🚧 En progreso
 
-- (sin sprint UX activo — etapa UX cerrada, próxima etapa: desarrollo funcional)
+- Preparación de demo final, presentación y defensa
 
 ---
 
 ## 📅 Próximos
-
-### Auth
-
-- Google Login
-- Email Verification
 
 ### Eventos
 
@@ -68,7 +64,7 @@ El proyecto ya cuenta con una arquitectura estable, una identidad visual definid
 
 ### Calidad
 
-- Polish & Delight
+- Polish & Delight posterior a la entrega académica
 
 ---
 

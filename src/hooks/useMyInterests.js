@@ -9,9 +9,6 @@ function useMyInterests(userId) {
 
 	useEffect(() => {
 		if (!userId) {
-			setEvents([])
-			setError(null)
-			setLoading(false)
 			return
 		}
 
@@ -60,6 +57,10 @@ function useMyInterests(userId) {
 			isMounted = false
 		}
 	}, [userId])
+
+	if (!userId) {
+		return { events: [], loading: false, error: null }
+	}
 
 	return { events, loading, error }
 }

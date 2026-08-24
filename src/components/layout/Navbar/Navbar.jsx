@@ -19,8 +19,12 @@ function Navbar() {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   const navItems = user
-    ? [...baseNavItems, { to: '/mis-intereses', label: 'Mis intereses' }]
-    : [...baseNavItems, { to: '/login', label: 'Ingresar' }, { to: '/register', label: 'Registrarse' }]
+    ? [
+        ...baseNavItems,
+        { to: '/mis-intereses', label: 'Mis intereses' },
+        ...(user.role === 'admin' ? [{ to: '/admin', label: 'Panel de administración' }] : []),
+      ]
+    : baseNavItems
 
   async function handleLogout() {
     setIsLoggingOut(true)
@@ -60,15 +64,26 @@ function Navbar() {
           </ul>
         </nav>
 
-        {user ? (
-          <div className={styles.authArea}>
+        <div className={styles.authArea}>
+          {user ? (
+            <>
             {/* Actualiza la barra cuando cambia el usuario autenticado. */}
             <span className={styles.userText}>Hola, {user.displayName || user.email}</span>
             <Button type="button" variant="secondary" onClick={handleLogout} disabled={isLoggingOut}>
               {isLoggingOut ? 'Cerrando...' : 'Cerrar sesión'}
             </Button>
-          </div>
-        ) : null}
+            </>
+          ) : (
+            <>
+              <Button as={Link} to="/login" variant="ghost">
+                Ingresar
+              </Button>
+              <Button as={Link} to="/register" variant="primary">
+                Registrarse
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   )

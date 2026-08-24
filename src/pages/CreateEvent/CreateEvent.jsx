@@ -32,7 +32,7 @@ function CreateEvent() {
     event.preventDefault()
 
     if (!user) {
-      setError('Debes iniciar sesion para proponer un evento.')
+      setError('Debés iniciar sesión para proponer un evento.')
       return
     }
 
@@ -46,7 +46,7 @@ function CreateEvent() {
         createdBy: user.uid,
       })
 
-      setSuccessMessage('Evento propuesto con exito. Sera revisado por un administrador.')
+      setSuccessMessage('Evento propuesto con éxito. Será revisado por un administrador.')
       setFormData({
         title: '',
         description: '',
@@ -59,8 +59,8 @@ function CreateEvent() {
       setTimeout(() => {
         navigate('/eventos')
       }, 1200)
-    } catch (submitError) {
-      setError('No se pudo enviar la propuesta. Intenta nuevamente.')
+	} catch {
+      setError('No se pudo enviar la propuesta. Intentá nuevamente.')
     } finally {
       setIsSubmitting(false)
     }
@@ -88,7 +88,7 @@ function CreateEvent() {
       submitVariant="accent"
       isSubmitting={isSubmitting}
       isFormDisabled={!user}
-      helperMessage={!user ? 'Debes iniciar sesion para enviar una propuesta.' : ''}
+      helperMessage={!user ? 'Debés iniciar sesión para enviar una propuesta.' : ''}
       errorMessage={error}
       successMessage={successMessage}
       styles={styles}

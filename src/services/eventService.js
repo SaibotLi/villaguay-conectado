@@ -32,6 +32,16 @@ function mapEventDocument(eventDocument) {
 	}
 }
 
+// Mantiene una agenda predecible sin requerir un indice adicional en Firestore.
+function sortEventsByCreationDate(events) {
+	return events.sort((firstEvent, secondEvent) => {
+		const firstCreatedAt = firstEvent.createdAt?.toMillis?.() ?? 0
+		const secondCreatedAt = secondEvent.createdAt?.toMillis?.() ?? 0
+
+		return secondCreatedAt - firstCreatedAt
+	})
+}
+
 // Obtiene unicamente los eventos aprobados desde Firestore.
 async function getEvents() {
 	return getApprovedEvents()
@@ -43,7 +53,7 @@ async function getApprovedEvents() {
 	const approvedEventsQuery = query(eventsRef, where('status', '==', 'approved'))
 	const snapshot = await getDocs(approvedEventsQuery)
 
-	return snapshot.docs.map(mapEventDocument)
+	return sortEventsByCreationDate(snapshot.docs.map(mapEventDocument))
 }
 
 // Obtiene unicamente los eventos pendientes desde Firestore.
@@ -52,7 +62,7 @@ async function getPendingEvents() {
 	const pendingEventsQuery = query(eventsRef, where('status', '==', 'pending'))
 	const snapshot = await getDocs(pendingEventsQuery)
 
-	return snapshot.docs.map(mapEventDocument)
+	return sortEventsByCreationDate(snapshot.docs.map(mapEventDocument))
 }
 
 // Aprueba un evento actualizando unicamente su estado a approved.

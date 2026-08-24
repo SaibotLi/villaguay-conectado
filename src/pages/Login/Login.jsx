@@ -19,7 +19,7 @@ function mapFirebaseError(errorCode) {
     case 'auth/invalid-credential':
       return 'Correo o contraseña incorrectos.'
     default:
-      return 'No se pudo iniciar sesión. Intenta nuevamente.'
+      return 'No se pudo iniciar sesión. Intentá nuevamente.'
   }
 }
 
@@ -51,7 +51,7 @@ function Login() {
     }
 
     if (!emailRegex.test(email.trim())) {
-      return 'Ingresa un correo con formato válido.'
+      return 'Ingresá un correo con formato válido.'
     }
 
     return ''
@@ -103,7 +103,7 @@ function Login() {
         return
       }
 
-      setErrorMessage('No se pudo iniciar sesión con Google. Intenta nuevamente.')
+      setErrorMessage('No se pudo iniciar sesión con Google. Intentá nuevamente.')
     } finally {
       setIsGoogleSubmitting(false)
     }
@@ -117,7 +117,7 @@ function Login() {
       await resendVerificationEmail(email.trim(), password)
       setResendMessage('Te reenviamos el correo de verificación.')
     } catch {
-      setResendMessage('No se pudo reenviar el correo. Intenta nuevamente en unos minutos.')
+      setResendMessage('No se pudo reenviar el correo. Intentá nuevamente en unos minutos.')
     } finally {
       setIsResending(false)
     }
@@ -128,7 +128,7 @@ function Login() {
     setResetMessage('')
 
     if (!resetEmail.trim() || !emailRegex.test(resetEmail.trim())) {
-      setResetError('Ingresa un correo con formato válido.')
+      setResetError('Ingresá un correo con formato válido.')
       return
     }
 
@@ -140,7 +140,7 @@ function Login() {
     } catch (error) {
       // Nunca revela si el correo existe: solo se informa un error real de envio.
       if (error.code !== 'auth/user-not-found') {
-        setResetError('No se pudo enviar el correo. Intenta nuevamente.')
+        setResetError('No se pudo enviar el correo. Intentá nuevamente.')
         setIsResetSubmitting(false)
         return
       }

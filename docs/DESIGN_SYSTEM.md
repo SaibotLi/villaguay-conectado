@@ -16,11 +16,11 @@ Las decisiones documentadas aquí tienen prioridad sobre decisiones visuales tom
 
 ---
 
-## 0. Contexto real detectado en el repo
+## 0. Estado de implementación
 
-Antes de proponer cambios se inspeccionó el estado visual real: `index.css`/`App.css` corresponden al boilerplate por defecto de Vite (acento violeta, fuente mono, layout de 1126px) y no reflejan la identidad del producto. Los módulos reales (`Navbar`, `EventCard`, `Home`) usan grises sueltos (`#d9d9d9`, `#2b2b2b`, `#f2f2f2`) sin tokens compartidos, sin sombras y sin estados de foco visibles.
-
-**Conclusión:** no existía una identidad visual real — es una base funcional tipo wireframe. Este documento la reemplaza como referencia única.
+Los tokens oficiales viven en `src/index.css` y los componentes/páginas utilizan CSS Modules.
+Navbar, Footer, Home, formularios, tarjetas y páginas informativas ya aplican esta identidad.
+`App.css` no forma parte de la interfaz actual y conserva estilos heredados del boilerplate de Vite.
 
 ---
 
@@ -212,16 +212,21 @@ Las animaciones existen únicamente para **comunicar estado o reforzar una inter
 
 ---
 
-## 14. Componentes reutilizables a futuro (propuesta, no implementar aún)
+## 14. Componentes reutilizables
 
-1. **`Card` base** (slots: imagen, título, meta, badge, acciones) → reemplaza duplicación entre `EventCard`, `AdminEventCard`, `AdminPublishedEventCard`.
-2. **`Button`** único con variantes (`primary/accent/secondary/ghost/danger`) vía props.
-3. **`Badge`** (estado: pendiente/publicado/rechazado) — reutilizable entre admin y detalle de evento.
-4. **`FormField`** (label + input/textarea/select + mensaje de error) — evita repetir estructura en `EventForm`, `Login`, `Register`, `Contact`.
-5. **`EmptyState`** (icono/ilustración + mensaje + acción opcional).
-6. **`Alert`/`Toast`** de éxito/error/advertencia, un solo componente parametrizado por tipo.
-7. **`PageHeader`** (título + descripción corta + acción principal opcional).
-8. **`Skeleton`/loading state** consistente para listas y detalle.
+Implementados:
+
+1. **`Button`** con variantes `primary`, `accent`, `secondary`, `ghost` y `danger`.
+2. **`Badge`** para estados administrativos.
+3. **`FormField`** para campos de formulario.
+4. **`EmptyState`** para listados sin contenido.
+5. **`Alert`** para mensajes de éxito, error, advertencia e información.
+
+Pendientes para futuras iteraciones:
+
+1. **`Card` base** para reducir la duplicación entre las tarjetas de eventos.
+2. **`PageHeader`** para encabezados de página repetidos.
+3. **`Skeleton`** para estados de carga consistentes.
 
 ---
 

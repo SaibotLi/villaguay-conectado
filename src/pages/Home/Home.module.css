@@ -10,6 +10,13 @@
   padding-block: var(--space-8);
 }
 
+.eyebrow {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .subtitle {
   max-width: 32rem;
   font-size: 18px;
@@ -33,7 +40,12 @@
   gap: var(--space-5);
   padding-block: var(--space-7);
   border-top: 1px solid var(--color-border);
-  text-align: center;
+}
+
+.sectionHeader {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 40rem;
 }
 
 .reasonsList {
@@ -47,11 +59,18 @@
 
 .reasonItem {
   display: grid;
+  align-content: start;
   gap: var(--space-2);
   padding: var(--space-4);
   background: var(--color-surface);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
+}
+
+.reasonNumber {
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .reasonItem p {
@@ -68,9 +87,14 @@
 
 .recentEventsHeader {
   display: flex;
-  align-items: baseline;
+  align-items: end;
   justify-content: space-between;
   gap: var(--space-3);
+}
+
+.recentEventsHeader > div {
+  display: grid;
+  gap: var(--space-2);
 }
 
 .link {

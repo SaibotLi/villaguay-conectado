@@ -11,13 +11,13 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 function mapFirebaseError(errorCode) {
   switch (errorCode) {
     case 'auth/email-already-in-use':
-      return 'Este correo ya esta registrado.'
+      return 'Este correo ya está registrado.'
     case 'auth/invalid-email':
-      return 'El correo ingresado no es valido.'
+      return 'El correo ingresado no es válido.'
     case 'auth/weak-password':
       return 'La contraseña debe tener al menos 6 caracteres.'
     default:
-      return 'No se pudo crear la cuenta. Intenta nuevamente.'
+      return 'No se pudo crear la cuenta. Intentá nuevamente.'
   }
 }
 
@@ -38,7 +38,7 @@ function Register() {
     }
 
     if (!emailRegex.test(email.trim())) {
-      return 'Ingresa un correo con formato valido.'
+      return 'Ingresá un correo con formato válido.'
     }
 
     if (password.length < 6) {
@@ -85,7 +85,7 @@ function Register() {
         return
       }
 
-      setErrorMessage('No se pudo crear la cuenta con Google. Intenta nuevamente.')
+      setErrorMessage('No se pudo crear la cuenta con Google. Intentá nuevamente.')
     } finally {
       setIsGoogleSubmitting(false)
     }

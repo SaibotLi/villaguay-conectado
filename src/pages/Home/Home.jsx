@@ -8,16 +8,19 @@ const RECENT_EVENTS_LIMIT = 3
 
 const reasons = [
   {
-    title: 'Eventos actualizados',
-    description: 'La agenda se mantiene al dia con las propuestas aprobadas por la comunidad.',
+    number: '01',
+    title: 'Descubrí',
+    description: 'Explorá los eventos publicados y encontrá actividades para disfrutar en la ciudad.',
   },
   {
-    title: 'Guarda tus favoritos',
-    description: 'Marca los eventos que te interesan y encontralos facil en un solo lugar.',
+    number: '02',
+    title: 'Participá',
+    description: 'Guardá los eventos que te interesan y compartilos con otras personas.',
   },
   {
-    title: 'Encontra actividades facil',
-    description: 'Toda la informacion clave de cada evento, a simple vista, sin vueltas.',
+    number: '03',
+    title: 'Proponé',
+    description: 'Enviá una propuesta para que pueda revisarse antes de su publicación.',
   },
 ]
 
@@ -28,13 +31,14 @@ function Home() {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
+        <p className={styles.eyebrow}>La agenda digital de la ciudad</p>
         <h1>VillaguayConectado</h1>
         <p className={styles.subtitle}>
-          Descubri todos los eventos de la ciudad en un solo lugar.
+          Descubrí los eventos, actividades y propuestas que hacen mover a Villaguay.
         </p>
         <div className={styles.actions}>
           <Button as={Link} to="/eventos" variant="primary" className={styles.heroButton}>
-            Explorar eventos
+            Ver eventos
           </Button>
           <Button as={Link} to="/proponer-evento" variant="accent" className={styles.heroButton}>
             Proponer evento
@@ -43,10 +47,14 @@ function Home() {
       </section>
 
       <section className={styles.reasons} aria-labelledby="reasons-heading">
-        <h2 id="reasons-heading">¿Por que usar VillaguayConectado?</h2>
+        <div className={styles.sectionHeader}>
+          <p className={styles.eyebrow}>Todo en un mismo lugar</p>
+          <h2 id="reasons-heading">Así funciona VillaguayConectado</h2>
+        </div>
         <ul className={styles.reasonsList}>
           {reasons.map((reason) => (
             <li key={reason.title} className={styles.reasonItem}>
+              <span className={styles.reasonNumber}>{reason.number}</span>
               <h3>{reason.title}</h3>
               <p>{reason.description}</p>
             </li>
@@ -56,7 +64,10 @@ function Home() {
 
       <section className={styles.recentEvents} aria-labelledby="recent-events-heading">
         <div className={styles.recentEventsHeader}>
-          <h2 id="recent-events-heading">Eventos recientes</h2>
+          <div>
+            <p className={styles.eyebrow}>Agenda actualizada</p>
+            <h2 id="recent-events-heading">Eventos recientes</h2>
+          </div>
           <Link to="/eventos" className={styles.link}>
             Ver todos
           </Link>
@@ -66,13 +77,13 @@ function Home() {
 
         {!loading && error && (
           <p className={styles.message}>
-            Ocurrio un problema al cargar los eventos. Intenta nuevamente en unos minutos.
+            Ocurrió un problema al cargar los eventos. Intentá nuevamente en unos minutos.
           </p>
         )}
 
         {!loading && !error && recentEvents.length === 0 && (
           <p className={styles.message}>
-            Todavia no hay eventos publicados. Volve pronto.
+            Todavía no hay eventos publicados. Volvé pronto.
           </p>
         )}
 

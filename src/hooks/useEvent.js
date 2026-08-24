@@ -8,9 +8,6 @@ function useEvent(id) {
 
 	useEffect(() => {
 		if (!id) {
-			setEvent(null)
-			setLoading(false)
-			setError(null)
 			return
 		}
 
@@ -47,6 +44,10 @@ function useEvent(id) {
 			isMounted = false
 		}
 	}, [id])
+
+	if (!id) {
+		return { event: null, loading: false, error: null }
+	}
 
 	return { event, loading, error }
 }

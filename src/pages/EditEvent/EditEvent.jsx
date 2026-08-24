@@ -1,40 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '../../components/forms/EventForm/EventForm'
 import { useEvent } from '../../hooks/useEvent'
 import { updateEvent } from '../../services/eventService'
 import styles from '../CreateEvent/CreateEvent.module.css'
 
-function EditEvent() {
-  const navigate = useNavigate()
-  const { id } = useParams()
-  const { event, loading, error } = useEvent(id)
+function createFormData(event) {
+  return {
+    title: event.title ?? '',
+    description: event.description ?? '',
+    location: event.location ?? '',
+    mapsUrl: event.mapsUrl ?? '',
+    date: event.date ?? '',
+    time: event.time ?? '',
+  }
+}
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    location: '',
-    mapsUrl: '',
-    date: '',
-    time: '',
-  })
+function EditEventForm({ event, eventId }) {
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState(() => createFormData(event))
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
-
-  useEffect(() => {
-    if (!event) {
-      return
-    }
-
-    setFormData({
-      title: event.title ?? '',
-      description: event.description ?? '',
-      location: event.location ?? '',
-      mapsUrl: event.mapsUrl ?? '',
-      date: event.date ?? '',
-      time: event.time ?? '',
-    })
-  }, [event])
 
   function handleChange(changeEvent) {
     const { name, value } = changeEvent.target
@@ -52,46 +38,13 @@ function EditEvent() {
       setIsSubmitting(true)
       setSubmitError('')
 
-      await updateEvent(id, formData)
+      await updateEvent(eventId, formData)
       navigate('/admin')
     } catch {
-      setSubmitError('No se pudieron guardar los cambios. Intenta nuevamente.')
+      setSubmitError('No se pudieron guardar los cambios. Intentá nuevamente.')
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  if (loading) {
-    return (
-      <section className={styles.page}>
-        <header className={styles.header}>
-          <h1>Editar evento</h1>
-        </header>
-        <p className={styles.message}>Cargando...</p>
-      </section>
-    )
-  }
-
-  if (error) {
-    return (
-      <section className={styles.page}>
-        <header className={styles.header}>
-          <h1>Editar evento</h1>
-        </header>
-        <p className={styles.message}>Ocurrio un problema al cargar el evento. Intenta nuevamente.</p>
-      </section>
-    )
-  }
-
-  if (!event) {
-    return (
-      <section className={styles.page}>
-        <header className={styles.header}>
-          <h1>Editar evento</h1>
-        </header>
-        <p className={styles.message}>No se encontro el evento solicitado.</p>
-      </section>
-    )
   }
 
   return (
@@ -110,6 +63,46 @@ function EditEvent() {
       styles={styles}
     />
   )
+}
+
+function EditEvent() {
+  const { id } = useParams()
+  const { event, loading, error } = useEvent(id)
+
+  if (loading) {
+    return (
+      <section className={styles.page}>
+        <header className={styles.header}>
+          <h1>Editar evento</h1>
+        </header>
+        <p className={styles.message}>Cargando...</p>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className={styles.page}>
+        <header className={styles.header}>
+          <h1>Editar evento</h1>
+        </header>
+        <p className={styles.message}>Ocurrió un problema al cargar el evento. Intentá nuevamente.</p>
+      </section>
+    )
+  }
+
+  if (!event) {
+    return (
+      <section className={styles.page}>
+        <header className={styles.header}>
+          <h1>Editar evento</h1>
+        </header>
+        <p className={styles.message}>No se encontró el evento solicitado.</p>
+      </section>
+    )
+  }
+
+  return <EditEventForm key={event.id} event={event} eventId={id} />
 }
 
 export default EditEvent
