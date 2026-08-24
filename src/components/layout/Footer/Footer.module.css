@@ -58,9 +58,12 @@
 
 .linkList a,
 .bottomBar a {
+  display: inline-block;
+  padding-block: 2px;
   color: var(--color-text-secondary);
   font-size: 14px;
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
 .linkList a:hover,

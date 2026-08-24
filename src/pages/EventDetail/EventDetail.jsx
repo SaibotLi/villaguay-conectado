@@ -4,6 +4,7 @@ import EventImage from '../../components/EventImage/EventImage'
 import InterestButton from '../../components/event/InterestButton'
 import ShareButton from '../../components/event/ShareButton'
 import Button from '../../components/ui/Button/Button'
+import { buildGoogleCalendarUrl } from '../../utils/googleCalendar'
 import styles from './EventDetail.module.css'
 
 function EventDetail() {
@@ -42,6 +43,8 @@ function EventDetail() {
     )
   }
 
+  const calendarUrl = buildGoogleCalendarUrl(event)
+
   return (
     <section className={styles.page}>
       <Link to="/eventos" className={styles.backLink}>
@@ -64,6 +67,17 @@ function EventDetail() {
           <div className={styles.actions}>
             <InterestButton eventId={event.id} />
             <ShareButton title={event.title} eventId={event.id} />
+            {calendarUrl ? (
+              <Button
+                as="a"
+                href={calendarUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="secondary"
+              >
+                Agregar a Google Calendar
+              </Button>
+            ) : null}
             {event.mapsUrl ? (
               <Button
                 as="a"

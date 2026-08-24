@@ -72,25 +72,27 @@ function EventForm({
             disabled={isFormDisabled || isSubmitting}
           />
 
-          <FormField
-            label="Fecha"
-            name="date"
-            type="date"
-            value={formData.date}
-            onChange={onChange}
-            required
-            disabled={isFormDisabled || isSubmitting}
-          />
+          <div className={styles.dateTimeGrid}>
+            <FormField
+              label="Fecha"
+              name="date"
+              type="date"
+              value={formData.date}
+              onChange={onChange}
+              required
+              disabled={isFormDisabled || isSubmitting}
+            />
 
-          <FormField
-            label="Hora"
-            name="time"
-            type="time"
-            value={formData.time}
-            onChange={onChange}
-            required
-            disabled={isFormDisabled || isSubmitting}
-          />
+            <FormField
+              label="Hora"
+              name="time"
+              type="time"
+              value={formData.time}
+              onChange={onChange}
+              required
+              disabled={isFormDisabled || isSubmitting}
+            />
+          </div>
 
           {/* Selector y vista previa de flyer opcional */}
           {onFileSelect ? (

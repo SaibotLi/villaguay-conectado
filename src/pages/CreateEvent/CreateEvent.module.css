@@ -19,6 +19,7 @@
   gap: var(--space-4);
   max-width: 640px;
   background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   padding: var(--space-5);
@@ -29,6 +30,12 @@
   gap: var(--space-4);
 }
 
+.dateTimeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
 @media (max-width: 640px) {
   .page {
     padding-block: var(--space-5);
@@ -36,5 +43,12 @@
 
   .card {
     padding: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .dateTimeGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 }
