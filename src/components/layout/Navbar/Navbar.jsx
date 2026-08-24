@@ -17,6 +17,7 @@ function Navbar() {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navItems = user
     ? [
@@ -25,6 +26,9 @@ function Navbar() {
         ...(user.role === 'admin' ? [{ to: '/admin', label: 'Panel de administración' }] : []),
       ]
     : baseNavItems
+
+  const closeMenu = () => setIsMenuOpen(false)
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev)
 
   async function handleLogout() {
     setIsLoggingOut(true)
@@ -41,48 +45,107 @@ function Navbar() {
   return (
     <header className={styles.header}>
       <div className={`${containerStyles.container} ${styles.inner}`}>
-        <Link to="/" className={styles.brand}>
-          <img src={isotype} alt="" className={styles.brandMark} />
-          VillaguayConectado
-        </Link>
+        <div className={styles.topRow}>
+          <Link to="/" className={styles.brand} onClick={closeMenu}>
+            <img src={isotype} alt="" className={styles.brandMark} />
+            VillaguayConectado
+          </Link>
 
-        <nav aria-label="Navegacion principal" className={styles.nav}>
-          <ul className={styles.list}>
-            {navItems.map((item) => (
-              <li key={item.to}>
-                <NavLink
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) =>
-                    isActive ? `${styles.link} ${styles.active}` : styles.link
-                  }
+          <button
+            type="button"
+            className={`${styles.hamburger} ${isMenuOpen ? styles.hamburgerOpen : ''}`}
+            onClick={toggleMenu}
+            aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            {isMenuOpen ? (
+              <svg
+                className={styles.hamburgerIcon}
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg
+                className={styles.hamburgerIcon}
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        <div
+          id="mobile-menu"
+          className={`${styles.menuContainer} ${isMenuOpen ? styles.menuOpen : ''}`}
+        >
+          <nav aria-label="Navegacion principal" className={styles.nav}>
+            <ul className={styles.list}>
+              {navItems.map((item) => (
+                <li key={item.to}>
+                  <NavLink
+                    to={item.to}
+                    end={item.end}
+                    onClick={closeMenu}
+                    className={({ isActive }) =>
+                      isActive ? `${styles.link} ${styles.active}` : styles.link
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className={styles.authArea}>
+            {user ? (
+              <>
+                <span className={styles.userText}>Hola, {user.displayName || user.email}</span>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={() => {
+                    closeMenu()
+                    handleLogout()
+                  }}
+                  disabled={isLoggingOut}
                 >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className={styles.authArea}>
-          {user ? (
-            <>
-            {/* Actualiza la barra cuando cambia el usuario autenticado. */}
-            <span className={styles.userText}>Hola, {user.displayName || user.email}</span>
-            <Button type="button" variant="secondary" onClick={handleLogout} disabled={isLoggingOut}>
-              {isLoggingOut ? 'Cerrando...' : 'Cerrar sesión'}
-            </Button>
-            </>
-          ) : (
-            <>
-              <Button as={Link} to="/login" variant="ghost">
-                Ingresar
-              </Button>
-              <Button as={Link} to="/register" variant="primary">
-                Registrarse
-              </Button>
-            </>
-          )}
+                  {isLoggingOut ? 'Cerrando...' : 'Cerrar sesión'}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button as={Link} to="/login" variant="ghost" onClick={closeMenu}>
+                  Ingresar
+                </Button>
+                <Button as={Link} to="/register" variant="primary" onClick={closeMenu}>
+                  Registrarse
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>
