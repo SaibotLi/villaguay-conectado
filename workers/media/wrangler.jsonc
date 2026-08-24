@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "villaguay-media-api",
+  "main": "src/index.js",
+  "compatibility_date": "2024-09-23",
+
+  // Binding con el bucket privado de Cloudflare R2
+  "r2_buckets": [
+    {
+      "binding": "MEDIA_BUCKET",
+      "bucket_name": "villaguay-conectado-media"
+    }
+  ],
+
+  // Variables de entorno públicas del Worker
+  "vars": {
+    "FIREBASE_PROJECT_ID": "villaguay-conectado",
+    "ALLOWED_ORIGINS": "http://localhost:5173,https://villaguay-conectado.vercel.app",
+    // Opcional: Si se desea forzar un dominio específico del Worker para URLs absolutas en respuestas.
+    // Si se deja vacío, el Worker usará automáticamente su propio request origin (ej: https://villaguay-media-api.workers.dev).
+    "WORKER_PUBLIC_URL": ""
+  }
+}

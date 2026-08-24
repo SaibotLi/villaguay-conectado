@@ -1,6 +1,7 @@
 import FormField from '../../ui/FormField/FormField'
 import Button from '../../ui/Button/Button'
 import Alert from '../../ui/Alert/Alert'
+import MediaPicker from '../../event/MediaPicker/MediaPicker'
 
 function EventForm({
   title,
@@ -15,6 +16,11 @@ function EventForm({
   helperMessage,
   errorMessage,
   successMessage,
+  currentImageUrl = '',
+  selectedFile = null,
+  onFileSelect,
+  onRemoveExisting,
+  uploadStatusMessage = '',
   styles,
 }) {
   return (
@@ -85,6 +91,18 @@ function EventForm({
             required
             disabled={isFormDisabled || isSubmitting}
           />
+
+          {/* Selector y vista previa de flyer opcional */}
+          {onFileSelect ? (
+            <MediaPicker
+              currentImageUrl={currentImageUrl}
+              selectedFile={selectedFile}
+              onFileSelect={onFileSelect}
+              onRemoveExisting={onRemoveExisting}
+              disabled={isFormDisabled || isSubmitting}
+              uploadStatusMessage={uploadStatusMessage}
+            />
+          ) : null}
 
           <Button type="submit" variant={submitVariant} disabled={isFormDisabled || isSubmitting}>
             {isSubmitting ? submittingLabel : submitLabel}

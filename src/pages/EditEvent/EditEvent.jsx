@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '../../components/forms/EventForm/EventForm'
 import { useEvent } from '../../hooks/useEvent'
 import { updateEvent } from '../../services/eventService'
+import { uploadEventImage } from '../../services/mediaService'
 import styles from '../CreateEvent/CreateEvent.module.css'
 
 function createFormData(event) {
@@ -19,7 +20,10 @@ function createFormData(event) {
 function EditEventForm({ event, eventId }) {
   const navigate = useNavigate()
   const [formData, setFormData] = useState(() => createFormData(event))
+  const [currentImageUrl, setCurrentImageUrl] = useState(() => event.imageUrl ?? '')
+  const [selectedFile, setSelectedFile] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [uploadStatusMessage, setUploadStatusMessage] = useState('')
   const [submitError, setSubmitError] = useState('')
 
   function handleChange(changeEvent) {
@@ -30,20 +34,40 @@ function EditEventForm({ event, eventId }) {
     }))
   }
 
+  function handleRemoveExisting() {
+    setCurrentImageUrl('')
+    setSelectedFile(null)
+  }
+
   async function handleSubmit(submitEvent) {
     submitEvent.preventDefault()
 
     try {
-      // Actualiza el evento usando exclusivamente la capa de servicios.
       setIsSubmitting(true)
       setSubmitError('')
 
-      await updateEvent(eventId, formData)
+      let finalImageUrl = currentImageUrl
+
+      // Si el usuario seleccionó un nuevo archivo, subirlo mediante mediaService
+      if (selectedFile) {
+        setUploadStatusMessage('Subiendo nuevo flyer...')
+        const mediaResult = await uploadEventImage(selectedFile)
+        finalImageUrl = mediaResult.url
+      }
+
+      setUploadStatusMessage('Guardando cambios...')
+
+      await updateEvent(eventId, {
+        ...formData,
+        imageUrl: finalImageUrl,
+      })
+
       navigate('/admin')
-    } catch {
-      setSubmitError('No se pudieron guardar los cambios. Intentá nuevamente.')
+    } catch (error) {
+      setSubmitError(error.message || 'No se pudieron guardar los cambios. Intentá nuevamente.')
     } finally {
       setIsSubmitting(false)
+      setUploadStatusMessage('')
     }
   }
 
@@ -54,12 +78,17 @@ function EditEventForm({ event, eventId }) {
       onChange={handleChange}
       onSubmit={handleSubmit}
       submitLabel="Guardar cambios"
-      submittingLabel="Guardando..."
+      submittingLabel={selectedFile ? 'Subiendo y guardando...' : 'Guardando...'}
       isSubmitting={isSubmitting}
       isFormDisabled={false}
       helperMessage=""
       errorMessage={submitError}
       successMessage=""
+      currentImageUrl={currentImageUrl}
+      selectedFile={selectedFile}
+      onFileSelect={setSelectedFile}
+      onRemoveExisting={handleRemoveExisting}
+      uploadStatusMessage={uploadStatusMessage}
       styles={styles}
     />
   )

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import EventImage from '../EventImage/EventImage'
 import Badge from '../ui/Badge/Badge'
 import Button from '../ui/Button/Button'
 import styles from './AdminCard.module.css'
@@ -6,6 +7,10 @@ import styles from './AdminCard.module.css'
 function AdminPublishedEventCard({ event, onDelete }) {
   return (
     <article className={styles.card}>
+      <div className={styles.imageWrapper}>
+        <EventImage event={event} />
+      </div>
+
       <div className={styles.headerRow}>
         <h3 className={styles.title}>{event.title}</h3>
         <Badge variant="approved">Publicado</Badge>

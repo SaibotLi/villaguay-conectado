@@ -5,6 +5,13 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   padding: var(--space-4);
+  overflow: hidden;
+}
+
+.imageWrapper {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  max-height: 180px;
 }
 
 .headerRow {

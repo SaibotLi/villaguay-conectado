@@ -102,6 +102,16 @@ function observeAuthState(callback) {
 	return onAuthStateChanged(auth, callback)
 }
 
+// Obtiene el token de autenticación (ID token) del usuario actualmente autenticado.
+async function getCurrentUserToken() {
+	const currentUser = auth.currentUser
+	if (!currentUser) {
+		throw new Error('Debés iniciar sesión para realizar esta acción.')
+	}
+
+	return currentUser.getIdToken()
+}
+
 export {
 	register,
 	login,
@@ -111,4 +121,6 @@ export {
 	getUserProfile,
 	resendVerificationEmail,
 	sendPasswordReset,
+	getCurrentUserToken,
 }
+

@@ -96,6 +96,7 @@ async function updateEvent(id, eventData) {
 		mapsUrl: eventData.mapsUrl?.trim() ?? '',
 		date: eventData.date,
 		time: eventData.time,
+		imageUrl: eventData.imageUrl?.trim() ?? '',
 	}
 
 	await updateDoc(eventRef, payload)
@@ -156,7 +157,7 @@ async function createEvent(eventData) {
 		mapsUrl: eventData.mapsUrl?.trim() ?? '',
 		date: eventData.date,
 		time: eventData.time,
-		imageUrl: '',
+		imageUrl: eventData.imageUrl?.trim() ?? '',
 		status: 'pending',
 		createdBy: eventData.createdBy,
 		createdAt: serverTimestamp(),
