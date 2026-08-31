@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import EventImage from '../EventImage/EventImage'
 import Badge from '../ui/Badge/Badge'
 import Button from '../ui/Button/Button'
+import { formatDisplayDate } from '../../utils/dateUtils'
 import styles from './AdminCard.module.css'
 
 function AdminPublishedEventCard({ event, onDelete }) {
@@ -17,7 +18,7 @@ function AdminPublishedEventCard({ event, onDelete }) {
       </div>
 
       <div className={styles.metaGroup}>
-        <p className={styles.meta}>📅 {event.date} · {event.time}</p>
+        <p className={styles.meta}>📅 {formatDisplayDate(event.date)} · {event.time}</p>
         <p className={styles.meta}>📍 {event.location}</p>
       </div>
 

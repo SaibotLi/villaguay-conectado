@@ -1,4 +1,5 @@
 import isotype from '../../assets/branding/isotype.png'
+import { formatDisplayDate } from '../../utils/dateUtils'
 import styles from './EventPlaceholder.module.css'
 
 function EventPlaceholder({ title, date, time }) {
@@ -8,7 +9,7 @@ function EventPlaceholder({ title, date, time }) {
       <h3 className={styles.title}>{title}</h3>
       <div className={styles.metaRow}>
         <p className={styles.metaLabel}>Fecha</p>
-        <p className={styles.metaValue}>{date}</p>
+        <p className={styles.metaValue}>{formatDisplayDate(date)}</p>
       </div>
       <div className={styles.metaRow}>
         <p className={styles.metaLabel}>Hora</p>
