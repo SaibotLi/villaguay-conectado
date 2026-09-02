@@ -8,6 +8,7 @@ import {
 	register,
 	resendVerificationEmail,
 	sendPasswordReset,
+	validatePassword,
 } from '../services/authService'
 
 const AuthContext = createContext(null)
@@ -61,6 +62,7 @@ function AuthProvider({ children }) {
 			logout,
 			resendVerificationEmail,
 			sendPasswordReset,
+			validatePassword,
 		}),
 		[user, loading],
 	)

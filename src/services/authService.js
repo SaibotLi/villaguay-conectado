@@ -8,6 +8,7 @@ import {
 	signInWithPopup,
 	signOut,
 	updateProfile,
+	validatePassword as firebaseValidatePassword,
 } from 'firebase/auth'
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { auth } from '../firebase/auth'
@@ -112,6 +113,11 @@ async function getCurrentUserToken() {
 	return currentUser.getIdToken()
 }
 
+// Valida una contraseña contra la política de seguridad configurada en Firebase Authentication.
+async function validatePassword(password) {
+	return firebaseValidatePassword(auth, password)
+}
+
 export {
 	register,
 	login,
@@ -122,5 +128,6 @@ export {
 	resendVerificationEmail,
 	sendPasswordReset,
 	getCurrentUserToken,
+	validatePassword,
 }
 

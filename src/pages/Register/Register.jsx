@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import FormField from '../../components/ui/FormField/FormField'
@@ -15,7 +15,8 @@ function mapFirebaseError(errorCode) {
     case 'auth/invalid-email':
       return 'El correo ingresado no es válido.'
     case 'auth/weak-password':
-      return 'La contraseña debe tener al menos 6 caracteres.'
+    case 'auth/password-does-not-meet-requirements':
+      return 'La contraseña no cumple con los requisitos de seguridad.'
     default:
       return 'No se pudo crear la cuenta. Intentá nuevamente.'
   }
@@ -23,17 +24,86 @@ function mapFirebaseError(errorCode) {
 
 function Register() {
   const navigate = useNavigate()
-  const { register, loginWithGoogle } = useAuth()
+  const { register, loginWithGoogle, validatePassword } = useAuth()
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
 
+  // Validación reactiva inmediata en base a la política configurada
+  const localCriteria = useMemo(() => {
+    return {
+      meetsMinLength: password.length >= 8,
+      containsLowercase: /[a-z]/.test(password),
+      containsUppercase: /[A-Z]/.test(password),
+      containsNumber: /[0-9]/.test(password),
+    }
+  }, [password])
+
+  const [firebaseCriteria, setFirebaseCriteria] = useState(null)
+
+  // Consulta complementaria a validatePassword de Firebase Auth para sincronización oficial
+  useEffect(() => {
+    let isCurrent = true
+
+    if (!password) {
+      return
+    }
+
+    if (typeof validatePassword === 'function') {
+      validatePassword(password)
+        .then((status) => {
+          if (isCurrent && status) {
+            setFirebaseCriteria({
+              meetsMinLength: status.meetsMinPasswordLength ?? (password.length >= 8),
+              containsLowercase: status.containsLowercaseLetter ?? (/[a-z]/.test(password)),
+              containsUppercase: status.containsUppercaseLetter ?? (/[A-Z]/.test(password)),
+              containsNumber: status.containsNumericCharacter ?? (/[0-9]/.test(password)),
+            })
+          }
+        })
+        .catch(() => {
+          // Si no está disponible o falla la red, el fallback local se mantiene activo
+        })
+    }
+
+    return () => {
+      isCurrent = false
+    }
+  }, [password, validatePassword])
+
+  // Criterios activos: resultado de Firebase Auth o evaluación reactiva local
+  const activeCriteria = (password ? firebaseCriteria : null) || localCriteria
+
+  const rules = [
+    {
+      id: 'length',
+      label: 'Al menos 8 caracteres',
+      isMet: activeCriteria.meetsMinLength,
+    },
+    {
+      id: 'lowercase',
+      label: 'Una letra minúscula',
+      isMet: activeCriteria.containsLowercase,
+    },
+    {
+      id: 'uppercase',
+      label: 'Una letra mayúscula',
+      isMet: activeCriteria.containsUppercase,
+    },
+    {
+      id: 'number',
+      label: 'Un número',
+      isMet: activeCriteria.containsNumber,
+    },
+  ]
+
   function validateForm() {
-    if (!fullName.trim() || !email.trim() || !password.trim()) {
+    if (!fullName.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
       return 'Todos los campos son obligatorios.'
     }
 
@@ -41,8 +111,24 @@ function Register() {
       return 'Ingresá un correo con formato válido.'
     }
 
-    if (password.length < 6) {
-      return 'La contraseña debe tener al menos 6 caracteres.'
+    if (!activeCriteria.meetsMinLength) {
+      return 'La contraseña debe tener al menos 8 caracteres.'
+    }
+
+    if (!activeCriteria.containsLowercase) {
+      return 'La contraseña debe incluir al menos una letra minúscula.'
+    }
+
+    if (!activeCriteria.containsUppercase) {
+      return 'La contraseña debe incluir al menos una letra mayúscula.'
+    }
+
+    if (!activeCriteria.containsNumber) {
+      return 'La contraseña debe incluir al menos un número.'
+    }
+
+    if (password !== confirmPassword) {
+      return 'Las contraseñas no coinciden.'
     }
 
     return ''
@@ -51,7 +137,7 @@ function Register() {
   async function handleSubmit(event) {
     event.preventDefault()
 
-    // Valida la informacion antes de solicitar el registro.
+    // Valida la información antes de solicitar el registro
     const validationError = validateForm()
     if (validationError) {
       setErrorMessage(validationError)
@@ -62,7 +148,7 @@ function Register() {
     setIsSubmitting(true)
 
     try {
-      // Solicita el registro; el service envia la verificacion y cierra la sesion.
+      // Solicita el registro; el service envía la verificación y cierra la sesión
       await register(email.trim(), password, fullName.trim())
 
       navigate('/login', { state: { registeredSuccessfully: true } })
@@ -126,6 +212,39 @@ function Register() {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            autoComplete="new-password"
+            required
+          />
+
+          {/* Sección visual de ayuda con los requisitos de contraseña */}
+          <div className={styles.passwordRules} aria-live="polite">
+            <p className={styles.passwordRulesTitle}>Tu contraseña debe tener:</p>
+            <ul className={styles.ruleList} aria-label="Requisitos de contraseña">
+              {rules.map((rule) => (
+                <li
+                  key={rule.id}
+                  className={`${styles.ruleItem} ${rule.isMet ? styles.ruleItemMet : ''}`}
+                >
+                  <span
+                    className={`${styles.ruleIcon} ${
+                      rule.isMet ? styles.ruleIconMet : styles.ruleIconPending
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {rule.isMet ? '✓' : '○'}
+                  </span>
+                  <span>{rule.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <FormField
+            label="Confirmar contraseña"
+            name="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
             autoComplete="new-password"
             required
           />
