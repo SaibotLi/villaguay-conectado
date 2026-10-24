@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import Button from '../../components/ui/Button/Button'
 import styles from './About.module.css'
 
@@ -16,11 +17,13 @@ const steps = [
   {
     number: '03',
     title: 'Proponé',
-    description: 'Creá una propuesta y enviála para que pueda ser revisada antes de publicarse.',
+    description: 'Creá una propuesta y enviala para que pueda ser revisada antes de publicarse.',
   },
 ]
 
 function About() {
+  useDocumentTitle('Sobre nosotros')
+
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
@@ -44,8 +47,10 @@ function About() {
         </div>
         <p className={styles.text}>
           La información sobre actividades locales suele estar repartida entre redes sociales,
-          flyers, mensajes y distintos canales. VillaguayConectado busca reunirla en una agenda
-          clara, fácil de consultar y pensada para la comunidad.
+          flyers, mensajes y distintos canales. VillaguayConectado nació como un proyecto final
+          universitario para la Universidad Nacional del Litoral, concebido como una iniciativa
+          tecnológica abierta y colaborativa para reunir la agenda cultural, deportiva y social
+          de Villaguay en un espacio claro, fácil de consultar y pensado para la comunidad.
         </p>
       </section>
 

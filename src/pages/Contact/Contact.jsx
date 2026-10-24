@@ -1,3 +1,4 @@
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import styles from './Contact.module.css'
 
 const contactChannels = [
@@ -28,6 +29,8 @@ const socialChannels = [
 ]
 
 function Contact() {
+  useDocumentTitle('Contacto')
+
   return (
     <div className={styles.page}>
       <section className={styles.hero}>

@@ -23,6 +23,20 @@
   padding: var(--space-4);
 }
 
+.pastBadge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 2px var(--space-2);
+  line-height: 1.2;
+}
+
 .title {
   margin: 0;
   font-size: 18px;

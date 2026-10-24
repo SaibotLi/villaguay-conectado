@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import Button from '../../components/ui/Button/Button'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import styles from './NotFound.module.css'
 
 function NotFound() {
+  useDocumentTitle('Página no encontrada')
   return (
     <section className={styles.page}>
       <div className={styles.card}>

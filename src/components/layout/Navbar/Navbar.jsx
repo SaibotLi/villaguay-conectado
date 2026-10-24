@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../../hooks/useAuth'
 import containerStyles from '../../../styles/container.module.css'
@@ -18,6 +18,23 @@ function Navbar() {
   const { user, logout } = useAuth()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const hamburgerRef = useRef(null)
+
+  // Cierre accesible del menú móvil mediante tecla Escape con restauración de foco
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setIsMenuOpen(false)
+        hamburgerRef.current?.focus()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMenuOpen])
 
   const navItems = user
     ? [
@@ -52,6 +69,7 @@ function Navbar() {
           </Link>
 
           <button
+            ref={hamburgerRef}
             type="button"
             className={`${styles.hamburger} ${isMenuOpen ? styles.hamburgerOpen : ''}`}
             onClick={toggleMenu}

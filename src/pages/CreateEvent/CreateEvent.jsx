@@ -1,7 +1,9 @@
 import styles from './CreateEvent.module.css'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
+import Button from '../../components/ui/Button/Button'
 import EventForm from '../../components/forms/EventForm/EventForm'
 import { createEvent } from '../../services/eventService'
 import { uploadEventImage } from '../../services/mediaService'
@@ -9,6 +11,8 @@ import { uploadEventImage } from '../../services/mediaService'
 function CreateEvent() {
   const navigate = useNavigate()
   const { user, loading } = useAuth()
+
+  useDocumentTitle('Proponer evento')
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -106,6 +110,20 @@ function CreateEvent() {
       isSubmitting={isSubmitting}
       isFormDisabled={!user}
       helperMessage={!user ? 'Debés iniciar sesión para enviar una propuesta.' : ''}
+      helperAction={
+        !user ? (
+          <div>
+            <Button
+              as={Link}
+              to="/login"
+              state={{ redirectTo: '/proponer-evento' }}
+              variant="primary"
+            >
+              Iniciar sesión para proponer
+            </Button>
+          </div>
+        ) : null
+      }
       errorMessage={error}
       successMessage={successMessage}
       selectedFile={selectedFile}

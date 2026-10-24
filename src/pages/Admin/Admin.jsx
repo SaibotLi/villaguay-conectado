@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import styles from './Admin.module.css'
 import { usePendingEvents } from '../../hooks/usePendingEvents'
 import { useApprovedEvents } from '../../hooks/useApprovedEvents'
@@ -8,6 +9,7 @@ import Alert from '../../components/ui/Alert/Alert'
 import EmptyState from '../../components/ui/EmptyState/EmptyState'
 
 function Admin() {
+  useDocumentTitle('Panel de administración')
   const {
     events: pendingEvents,
     loading: pendingLoading,

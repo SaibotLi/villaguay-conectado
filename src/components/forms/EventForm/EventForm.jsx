@@ -14,6 +14,7 @@ function EventForm({
   isSubmitting,
   isFormDisabled,
   helperMessage,
+  helperAction,
   errorMessage,
   successMessage,
   currentImageUrl = '',
@@ -30,7 +31,12 @@ function EventForm({
       </header>
 
       <div className={styles.card}>
-        {helperMessage ? <Alert variant="warning">{helperMessage}</Alert> : null}
+        {helperMessage ? (
+          <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
+            <Alert variant="warning">{helperMessage}</Alert>
+            {helperAction}
+          </div>
+        ) : null}
 
         <form className={styles.form} onSubmit={onSubmit}>
           <FormField

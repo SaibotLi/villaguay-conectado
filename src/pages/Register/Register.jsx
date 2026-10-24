@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import FormField from '../../components/ui/FormField/FormField'
 import Button from '../../components/ui/Button/Button'
 import Alert from '../../components/ui/Alert/Alert'
@@ -22,17 +23,43 @@ function mapFirebaseError(errorCode) {
   }
 }
 
+function getSafeRedirectUrl(target) {
+  if (typeof target !== 'string') return '/'
+  const trimmed = target.trim()
+  if (
+    !trimmed.startsWith('/') ||
+    trimmed.startsWith('//') ||
+    trimmed.includes(':') ||
+    trimmed.startsWith('/login') ||
+    trimmed.startsWith('/register')
+  ) {
+    return '/'
+  }
+  return trimmed
+}
+
 function Register() {
   const navigate = useNavigate()
+  const location = useLocation()
   const { register, loginWithGoogle, validatePassword } = useAuth()
+  const safeRedirectTo = getSafeRedirectUrl(location.state?.redirectTo)
+
+  // Título descriptivo de pestaña
+  useDocumentTitle('Registrarse')
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [fieldErrors, setFieldErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
+
+  const fullNameInputRef = useRef(null)
+  const emailInputRef = useRef(null)
+  const passwordInputRef = useRef(null)
+  const confirmPasswordInputRef = useRef(null)
 
   // Validación reactiva inmediata en base a la política configurada
   const localCriteria = useMemo(() => {
@@ -102,56 +129,66 @@ function Register() {
     },
   ]
 
-  function validateForm() {
-    if (!fullName.trim() || !email.trim() || !password.trim() || !confirmPassword.trim()) {
-      return 'Todos los campos son obligatorios.'
+  function validateRegisterForm() {
+    const errors = {}
+
+    if (!fullName.trim()) {
+      errors.fullName = 'Ingresá tu nombre completo.'
     }
 
-    if (!emailRegex.test(email.trim())) {
-      return 'Ingresá un correo con formato válido.'
+    if (!email.trim()) {
+      errors.email = 'Ingresá tu correo electrónico.'
+    } else if (!emailRegex.test(email.trim())) {
+      errors.email = 'Ingresá un correo con formato válido.'
     }
 
-    if (!activeCriteria.meetsMinLength) {
-      return 'La contraseña debe tener al menos 8 caracteres.'
+    if (!password.trim()) {
+      errors.password = 'Ingresá una contraseña.'
+    } else if (
+      !activeCriteria.meetsMinLength ||
+      !activeCriteria.containsLowercase ||
+      !activeCriteria.containsUppercase ||
+      !activeCriteria.containsNumber
+    ) {
+      errors.password = 'La contraseña no cumple con todos los requisitos de seguridad.'
     }
 
-    if (!activeCriteria.containsLowercase) {
-      return 'La contraseña debe incluir al menos una letra minúscula.'
+    if (!confirmPassword.trim()) {
+      errors.confirmPassword = 'Confirmá tu contraseña.'
+    } else if (password !== confirmPassword) {
+      errors.confirmPassword = 'Las contraseñas no coinciden.'
     }
 
-    if (!activeCriteria.containsUppercase) {
-      return 'La contraseña debe incluir al menos una letra mayúscula.'
-    }
-
-    if (!activeCriteria.containsNumber) {
-      return 'La contraseña debe incluir al menos un número.'
-    }
-
-    if (password !== confirmPassword) {
-      return 'Las contraseñas no coinciden.'
-    }
-
-    return ''
+    return errors
   }
 
   async function handleSubmit(event) {
     event.preventDefault()
 
-    // Valida la información antes de solicitar el registro
-    const validationError = validateForm()
-    if (validationError) {
-      setErrorMessage(validationError)
+    const errors = validateRegisterForm()
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors)
+      setErrorMessage('Revisá los datos ingresados para continuar.')
+
+      if (errors.fullName) {
+        fullNameInputRef.current?.focus()
+      } else if (errors.email) {
+        emailInputRef.current?.focus()
+      } else if (errors.password) {
+        passwordInputRef.current?.focus()
+      } else if (errors.confirmPassword) {
+        confirmPasswordInputRef.current?.focus()
+      }
       return
     }
 
+    setFieldErrors({})
     setErrorMessage('')
     setIsSubmitting(true)
 
     try {
-      // Solicita el registro; el service envía la verificación y cierra la sesión
       await register(email.trim(), password, fullName.trim())
-
-      navigate('/login', { state: { registeredSuccessfully: true } })
+      navigate('/login', { state: { registeredSuccessfully: true, redirectTo: safeRedirectTo } })
     } catch (error) {
       setErrorMessage(mapFirebaseError(error.code))
     } finally {
@@ -165,7 +202,7 @@ function Register() {
 
     try {
       await loginWithGoogle()
-      navigate('/')
+      navigate(safeRedirectTo, { replace: true })
     } catch (error) {
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
         return
@@ -187,37 +224,59 @@ function Register() {
       <div className={styles.card}>
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
           <FormField
+            inputRef={fullNameInputRef}
             label="Nombre completo"
             name="fullName"
             type="text"
             value={fullName}
-            onChange={(event) => setFullName(event.target.value)}
+            onChange={(event) => {
+              setFullName(event.target.value)
+              if (fieldErrors.fullName) {
+                setFieldErrors((prev) => ({ ...prev, fullName: '' }))
+              }
+            }}
+            error={fieldErrors.fullName}
             autoComplete="name"
             required
           />
 
           <FormField
+            inputRef={emailInputRef}
             label="Correo electrónico"
             name="email"
             type="email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              setEmail(event.target.value)
+              if (fieldErrors.email) {
+                setFieldErrors((prev) => ({ ...prev, email: '' }))
+              }
+            }}
+            error={fieldErrors.email}
             autoComplete="email"
             required
           />
 
           <FormField
+            inputRef={passwordInputRef}
             label="Contraseña"
             name="password"
             type="password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => {
+              setPassword(event.target.value)
+              if (fieldErrors.password) {
+                setFieldErrors((prev) => ({ ...prev, password: '' }))
+              }
+            }}
+            error={fieldErrors.password}
             autoComplete="new-password"
+            describedBy="password-rules"
             required
           />
 
-          {/* Sección visual de ayuda con los requisitos de contraseña */}
-          <div className={styles.passwordRules} aria-live="polite">
+          {/* Sección visual de ayuda con los requisitos de contraseña vinculada al input */}
+          <div id="password-rules" className={styles.passwordRules} aria-live="polite">
             <p className={styles.passwordRulesTitle}>Tu contraseña debe tener:</p>
             <ul className={styles.ruleList} aria-label="Requisitos de contraseña">
               {rules.map((rule) => (
@@ -240,11 +299,18 @@ function Register() {
           </div>
 
           <FormField
+            inputRef={confirmPasswordInputRef}
             label="Confirmar contraseña"
             name="confirmPassword"
             type="password"
             value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            onChange={(event) => {
+              setConfirmPassword(event.target.value)
+              if (fieldErrors.confirmPassword) {
+                setFieldErrors((prev) => ({ ...prev, confirmPassword: '' }))
+              }
+            }}
+            error={fieldErrors.confirmPassword}
             autoComplete="new-password"
             required
           />
@@ -265,6 +331,13 @@ function Register() {
           >
             {isGoogleSubmitting ? 'Conectando...' : 'Continuar con Google'}
           </Button>
+
+          <p className={styles.switchAuthText}>
+            ¿Ya tenés cuenta?{' '}
+            <Link to="/login" state={{ redirectTo: safeRedirectTo }} className={styles.switchAuthLink}>
+              Iniciá sesión
+            </Link>
+          </p>
         </form>
       </div>
     </section>

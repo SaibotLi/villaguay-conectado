@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import FormField from '../../components/ui/FormField/FormField'
 import Button from '../../components/ui/Button/Button'
 import Alert from '../../components/ui/Alert/Alert'
@@ -23,16 +24,38 @@ function mapFirebaseError(errorCode) {
   }
 }
 
+/**
+ * Valida de forma estricta que la ruta de retorno sea una ruta interna segura,
+ * evitando vulnerabilidades de Open Redirect hacia dominios externos o bucles de login.
+ */
+function getSafeRedirectUrl(target) {
+  if (typeof target !== 'string') return '/'
+  const trimmed = target.trim()
+  if (
+    !trimmed.startsWith('/') ||
+    trimmed.startsWith('//') ||
+    trimmed.includes(':') ||
+    trimmed.startsWith('/login') ||
+    trimmed.startsWith('/register')
+  ) {
+    return '/'
+  }
+  return trimmed
+}
+
 function Login() {
   const navigate = useNavigate()
   const location = useLocation()
   const { login, loginWithGoogle, resendVerificationEmail, sendPasswordReset } = useAuth()
 
+  const safeRedirectTo = getSafeRedirectUrl(location.state?.redirectTo)
+  const noticeMessage = location.state?.notice || ''
   const registeredSuccessfully = Boolean(location.state?.registeredSuccessfully)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [fieldErrors, setFieldErrors] = useState({})
   const [isUnverified, setIsUnverified] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
@@ -43,40 +66,58 @@ function Login() {
   const [resetEmail, setResetEmail] = useState('')
   const [resetMessage, setResetMessage] = useState('')
   const [resetError, setResetError] = useState('')
+  const [resetFieldError, setResetFieldError] = useState('')
   const [isResetSubmitting, setIsResetSubmitting] = useState(false)
 
-  function validateForm() {
-    if (!email.trim() || !password.trim()) {
-      return 'Todos los campos son obligatorios.'
+  const emailInputRef = useRef(null)
+  const passwordInputRef = useRef(null)
+  const resetEmailInputRef = useRef(null)
+
+  // Título descriptivo de pestaña según el modo activo
+  useDocumentTitle(isResetMode ? 'Recuperar contraseña' : 'Iniciar sesión')
+
+  function validateLoginForm() {
+    const errors = {}
+
+    if (!email.trim()) {
+      errors.email = 'Ingresá tu correo electrónico.'
+    } else if (!emailRegex.test(email.trim())) {
+      errors.email = 'Ingresá un correo con formato válido.'
     }
 
-    if (!emailRegex.test(email.trim())) {
-      return 'Ingresá un correo con formato válido.'
+    if (!password.trim()) {
+      errors.password = 'Ingresá tu contraseña.'
     }
 
-    return ''
+    return errors
   }
 
   async function handleSubmit(event) {
     event.preventDefault()
 
-    // Valida lo mínimo necesario antes de llamar al contexto.
-    const validationError = validateForm()
-    if (validationError) {
-      setErrorMessage(validationError)
+    const errors = validateLoginForm()
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors)
+      setErrorMessage('Revisá los campos obligatorios para continuar.')
       setIsUnverified(false)
+
+      if (errors.email) {
+        emailInputRef.current?.focus()
+      } else if (errors.password) {
+        passwordInputRef.current?.focus()
+      }
       return
     }
 
+    setFieldErrors({})
     setErrorMessage('')
     setIsUnverified(false)
     setResendMessage('')
     setIsSubmitting(true)
 
     try {
-      // Solicita el inicio de sesión utilizando el contexto de autenticación.
       await login(email.trim(), password)
-      navigate('/')
+      navigate(safeRedirectTo, { replace: true })
     } catch (error) {
       if (error.code === 'auth/email-not-verified') {
         setIsUnverified(true)
@@ -96,10 +137,9 @@ function Login() {
 
     try {
       await loginWithGoogle()
-      navigate('/')
+      navigate(safeRedirectTo, { replace: true })
     } catch (error) {
       if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-        // El usuario cancelo el popup: no se muestra ningun error.
         return
       }
 
@@ -126,19 +166,26 @@ function Login() {
   async function handleResetSubmit(event) {
     event.preventDefault()
     setResetMessage('')
+    setResetError('')
 
-    if (!resetEmail.trim() || !emailRegex.test(resetEmail.trim())) {
-      setResetError('Ingresá un correo con formato válido.')
+    if (!resetEmail.trim()) {
+      setResetFieldError('Ingresá tu correo electrónico.')
+      resetEmailInputRef.current?.focus()
       return
     }
 
-    setResetError('')
+    if (!emailRegex.test(resetEmail.trim())) {
+      setResetFieldError('Ingresá un correo con formato válido.')
+      resetEmailInputRef.current?.focus()
+      return
+    }
+
+    setResetFieldError('')
     setIsResetSubmitting(true)
 
     try {
       await sendPasswordReset(resetEmail.trim())
     } catch (error) {
-      // Nunca revela si el correo existe: solo se informa un error real de envio.
       if (error.code !== 'auth/user-not-found') {
         setResetError('No se pudo enviar el correo. Intentá nuevamente.')
         setIsResetSubmitting(false)
@@ -153,11 +200,19 @@ function Login() {
   return (
     <section className={styles.page}>
       <header className={styles.header}>
-        <h1>Ingresar</h1>
-        <p className={styles.subtitle}>Accede a tu cuenta para gestionar tus intereses y propuestas.</p>
+        <h1>{isResetMode ? 'Recuperar contraseña' : 'Ingresar'}</h1>
+        <p className={styles.subtitle}>
+          {isResetMode
+            ? 'Ingresá tu correo electrónico y te enviaremos las instrucciones para recuperar tu cuenta.'
+            : 'Accedé a tu cuenta para gestionar tus intereses y propuestas.'}
+        </p>
       </header>
 
       <div className={styles.card}>
+        {noticeMessage && !registeredSuccessfully ? (
+          <Alert variant="info">{noticeMessage}</Alert>
+        ) : null}
+
         {registeredSuccessfully ? (
           <Alert variant="success">
             Tu cuenta fue creada correctamente. Te enviamos un correo para verificar tu dirección de
@@ -168,11 +223,16 @@ function Login() {
         {isResetMode ? (
           <form className={styles.form} onSubmit={handleResetSubmit} noValidate>
             <FormField
+              inputRef={resetEmailInputRef}
               label="Correo electrónico"
               name="resetEmail"
               type="email"
               value={resetEmail}
-              onChange={(event) => setResetEmail(event.target.value)}
+              onChange={(event) => {
+                setResetEmail(event.target.value)
+                if (resetFieldError) setResetFieldError('')
+              }}
+              error={resetFieldError}
               autoComplete="email"
               required
             />
@@ -184,28 +244,50 @@ function Login() {
               {isResetSubmitting ? 'Enviando...' : 'Enviar enlace de recuperación'}
             </Button>
 
-            <Button type="button" variant="ghost" onClick={() => setIsResetMode(false)}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setIsResetMode(false)
+                setResetFieldError('')
+                setResetError('')
+              }}
+            >
               Volver a iniciar sesión
             </Button>
           </form>
         ) : (
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
             <FormField
+              inputRef={emailInputRef}
               label="Correo electrónico"
               name="email"
               type="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => {
+                setEmail(event.target.value)
+                if (fieldErrors.email) {
+                  setFieldErrors((prev) => ({ ...prev, email: '' }))
+                }
+              }}
+              error={fieldErrors.email}
               autoComplete="email"
               required
             />
 
             <FormField
+              inputRef={passwordInputRef}
               label="Contraseña"
               name="password"
               type="password"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => {
+                setPassword(event.target.value)
+                if (fieldErrors.password) {
+                  setFieldErrors((prev) => ({ ...prev, password: '' }))
+                }
+              }}
+              error={fieldErrors.password}
               autoComplete="current-password"
               required
             />
@@ -233,7 +315,11 @@ function Login() {
               type="button"
               variant="ghost"
               className={styles.forgotButton}
-              onClick={() => setIsResetMode(true)}
+              onClick={() => {
+                setIsResetMode(true)
+                setFieldErrors({})
+                setErrorMessage('')
+              }}
             >
               ¿Olvidaste tu contraseña?
             </Button>
@@ -248,6 +334,17 @@ function Login() {
             >
               {isGoogleSubmitting ? 'Conectando...' : 'Continuar con Google'}
             </Button>
+
+            <p className={styles.switchAuthText}>
+              ¿Todavía no tenés cuenta?{' '}
+              <Link
+                to="/register"
+                state={{ redirectTo: safeRedirectTo }}
+                className={styles.switchAuthLink}
+              >
+                Registrate
+              </Link>
+            </p>
           </form>
         )}
       </div>

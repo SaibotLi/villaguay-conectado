@@ -102,6 +102,29 @@
   font-size: 14px;
 }
 
+.switchAuthText {
+  margin: var(--space-2) 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.switchAuthLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color var(--transition-fast);
+}
+
+.switchAuthLink:hover {
+  color: var(--color-primary-hover);
+}
+
+.switchAuthLink:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 @media (max-width: 640px) {
   .page {
     padding-block: var(--space-5);

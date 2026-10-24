@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEvents } from '../../hooks/useEvents'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import EventCard from '../../components/event/EventCard'
 import Button from '../../components/ui/Button/Button'
 import heroImg from '../../assets/images/hero.jpg'
@@ -14,6 +15,8 @@ function Home() {
   const { events, loading, error } = useEvents()
   const recentEvents = events.slice(0, RECENT_EVENTS_LIMIT)
 
+  useDocumentTitle('Inicio')
+
   return (
     <div className={styles.page}>
       {/* SECCIÓN 1 — HERO */}
@@ -26,7 +29,7 @@ function Home() {
         />
         <div className={styles.heroOverlay} />
         <div className={styles.heroContent}>
-          <p className={styles.heroEyebrow}>La agenda digital de la ciudad</p>
+          <p className={styles.heroEyebrow}>La agenda comunitaria de la ciudad</p>
           <h1 className={styles.heroTitle}>VillaguayConectado</h1>
           <p className={styles.heroSubtitle}>
             Descubrí todos los eventos de la ciudad en un solo lugar.
@@ -112,7 +115,7 @@ function Home() {
               <span className={styles.stepNumber}>03</span>
               <h3 className={styles.stepTitle}>Proponé</h3>
               <p className={styles.stepDescription}>
-                ¿Tenés un taller, peña, muestra o actividad? Enviá tu propuesta para que el equipo municipal la revise y se publique en la agenda oficial.
+                ¿Tenés un taller, peña, muestra o actividad? Enviá tu propuesta para que el equipo administrador la revise y se publique en la agenda comunitaria.
               </p>
               <div>
                 <Button as={Link} to="/proponer-evento" variant="accent">
@@ -128,8 +131,8 @@ function Home() {
       <section className={styles.recentEvents} aria-labelledby="recent-events-heading">
         <div className={styles.recentEventsHeader}>
           <div>
-            <p className={styles.eyebrow}>Agenda actualizada</p>
-            <h2 id="recent-events-heading">Eventos recientes</h2>
+            <p className={styles.eyebrow}>Agenda comunitaria</p>
+            <h2 id="recent-events-heading">Eventos recientemente publicados</h2>
           </div>
           <Link to="/eventos" className={styles.link}>
             Ver todos

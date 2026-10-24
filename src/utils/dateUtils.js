@@ -264,7 +264,7 @@ export function formatDayHeading(dateIso) {
   const weekday = WEEKDAY_NAMES_FULL[dayOfWeek]
   const monthName = MONTH_NAMES[m - 1]
 
-  return `${weekday} ${d} de ${monthName} de ${y}`
+  return `${weekday} ${d} de ${monthName.toLowerCase()} de ${y}`
 }
 
 /**
@@ -357,4 +357,19 @@ export function sortEventsByFilter(events, activeFilter = 'upcoming', todayIso =
     if (aDate !== bDate) return aDate.localeCompare(bDate)
     return aTime.localeCompare(bTime)
   })
+}
+
+/**
+ * Determina si una fecha ISO YYYY-MM-DD corresponde a un evento finalizado
+ * comparándola con la fecha actual de Argentina.
+ *
+ * @param {string} dateStr - Cadena de fecha en formato YYYY-MM-DD.
+ * @param {string} [todayIso] - Fecha canónica actual en Argentina (opcional).
+ * @returns {boolean} True si la fecha es estrictamente anterior a todayIso.
+ */
+export function isEventPast(dateStr, todayIso = getArgentinaTodayIso()) {
+  if (!dateStr || typeof dateStr !== 'string') return false
+  const trimmed = dateStr.trim()
+  if (!trimmed || !todayIso) return false
+  return trimmed < todayIso
 }

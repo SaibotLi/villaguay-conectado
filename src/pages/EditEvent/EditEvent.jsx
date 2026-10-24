@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import EventForm from '../../components/forms/EventForm/EventForm'
 import { useEvent } from '../../hooks/useEvent'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { updateEvent } from '../../services/eventService'
 import { uploadEventImage } from '../../services/mediaService'
 import styles from '../CreateEvent/CreateEvent.module.css'
@@ -97,6 +98,8 @@ function EditEventForm({ event, eventId }) {
 function EditEvent() {
   const { id } = useParams()
   const { event, loading, error } = useEvent(id)
+
+  useDocumentTitle(event?.title ? `Editar ${event.title}` : 'Editar evento')
 
   if (loading) {
     return (

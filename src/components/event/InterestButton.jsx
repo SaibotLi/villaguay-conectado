@@ -17,7 +17,12 @@ function InterestButton({ eventId }) {
 
   async function handleClick() {
     if (!user) {
-      navigate('/login')
+      navigate('/login', {
+        state: {
+          redirectTo: `/eventos/${eventId}`,
+          notice: 'Iniciá sesión para guardar tus eventos de interés.',
+        },
+      })
       return
     }
 

@@ -1,5 +1,6 @@
 import EventCard from '../../components/event/EventCard'
 import useAuth from '../../hooks/useAuth'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { useMyInterests } from '../../hooks/useMyInterests'
 import EmptyState from '../../components/ui/EmptyState/EmptyState'
 import styles from './MyInterests.module.css'
@@ -7,6 +8,8 @@ import styles from './MyInterests.module.css'
 function MyInterests() {
   const { user } = useAuth()
   const { events, loading, error } = useMyInterests(user?.uid)
+
+  useDocumentTitle('Mis intereses')
 
   return (
     <section className={styles.page}>

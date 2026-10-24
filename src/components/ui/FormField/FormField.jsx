@@ -1,6 +1,8 @@
+import { useId } from 'react'
 import styles from './FormField.module.css'
 
 function FormField({
+  id,
   label,
   name,
   type = 'text',
@@ -12,10 +14,16 @@ function FormField({
   autoComplete,
   placeholder,
   rows = 4,
+  inputRef,
+  describedBy,
 }) {
-  const fieldId = `field-${name}`
+  const generatedId = useId()
+  const fieldId = id || (name ? `field-${name}` : `field-${generatedId}`)
   const isTextarea = type === 'textarea'
   const controlClassName = error ? `${styles.control} ${styles.controlError}` : styles.control
+
+  const errorId = error ? `${fieldId}-error` : null
+  const combinedDescribedBy = [describedBy, errorId].filter(Boolean).join(' ') || undefined
 
   return (
     <div className={styles.field}>
@@ -25,6 +33,7 @@ function FormField({
 
       {isTextarea ? (
         <textarea
+          ref={inputRef}
           id={fieldId}
           name={name}
           value={value}
@@ -34,9 +43,13 @@ function FormField({
           disabled={disabled}
           placeholder={placeholder}
           className={controlClassName}
+          aria-invalid={Boolean(error)}
+          aria-required={required || undefined}
+          aria-describedby={combinedDescribedBy}
         />
       ) : (
         <input
+          ref={inputRef}
           id={fieldId}
           type={type}
           name={name}
@@ -47,11 +60,14 @@ function FormField({
           autoComplete={autoComplete}
           placeholder={placeholder}
           className={controlClassName}
+          aria-invalid={Boolean(error)}
+          aria-required={required || undefined}
+          aria-describedby={combinedDescribedBy}
         />
       )}
 
       {error ? (
-        <p className={styles.errorMessage} role="alert">
+        <p id={errorId} className={styles.errorMessage} role="alert">
           {error}
         </p>
       ) : null}
