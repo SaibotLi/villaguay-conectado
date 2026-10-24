@@ -1,0 +1,32 @@
+{
+  "name": "VillaguayConectado",
+  "short_name": "VillaguayConectado",
+  "description": "Plataforma comunitaria para descubrir y publicar eventos en Villaguay, Entre Ríos.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFA",
+  "theme_color": "#0F5C5C",
+  "lang": "es-AR",
+  "categories": ["events", "lifestyle", "social"],
+  "icons": [
+    {
+      "src": "/icons/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

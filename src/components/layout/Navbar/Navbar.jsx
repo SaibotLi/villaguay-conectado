@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
+import { Smartphone } from 'lucide-react'
 import useAuth from '../../../hooks/useAuth'
+import usePwa from '../../../hooks/usePwa'
 import containerStyles from '../../../styles/container.module.css'
 import isotype from '../../../assets/branding/isotype.png'
 import Button from '../../ui/Button/Button'
@@ -16,6 +18,7 @@ const baseNavItems = [
 function Navbar() {
   const navigate = useNavigate()
   const { user, logout } = useAuth()
+  const { canInstall, isInstalled, canInstallIos, promptInstall, openIosModal } = usePwa()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const hamburgerRef = useRef(null)
@@ -47,13 +50,22 @@ function Navbar() {
   const closeMenu = () => setIsMenuOpen(false)
   const toggleMenu = () => setIsMenuOpen((prev) => !prev)
 
+  const handleInstallClick = () => {
+    closeMenu()
+    if (canInstallIos) {
+      openIosModal()
+    } else {
+      promptInstall()
+    }
+  }
+
   async function handleLogout() {
     setIsLoggingOut(true)
-
     try {
-      // Finaliza la sesión y permite que el contexto actualice toda la interfaz.
       await logout()
-      navigate('/')
+      navigate('/login')
+    } catch {
+      // Ignora errores visuales transitorios de cierre de sesión
     } finally {
       setIsLoggingOut(false)
     }
@@ -164,6 +176,20 @@ function Navbar() {
               </>
             )}
           </div>
+
+          {canInstall && !isInstalled && (
+            <div className={styles.mobileInstallArea}>
+              <Button
+                type="button"
+                variant="accent"
+                className={styles.mobileInstallButton}
+                onClick={handleInstallClick}
+              >
+                <Smartphone size={16} aria-hidden="true" />
+                <span>{canInstallIos ? 'Cómo instalar la app' : 'Instalar aplicación'}</span>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </header>

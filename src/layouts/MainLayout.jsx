@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/layout/Navbar/Navbar'
 import Footer from '../components/layout/Footer/Footer'
+import PwaIosModal from '../components/ui/PwaIosModal/PwaIosModal'
 import containerStyles from '../styles/container.module.css'
 import styles from './MainLayout.module.css'
 
@@ -18,6 +19,7 @@ function MainLayout() {
         </div>
       </main>
       <Footer />
+      <PwaIosModal />
     </div>
   )
 }

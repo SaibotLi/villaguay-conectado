@@ -3,6 +3,7 @@ import { useEvents } from '../../hooks/useEvents'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import EventCard from '../../components/event/EventCard'
 import Button from '../../components/ui/Button/Button'
+import PwaInstallCta from '../../components/ui/PwaInstallCta/PwaInstallCta'
 import heroImg from '../../assets/images/hero.jpg'
 import descubriImg from '../../assets/images/descubri.jpg'
 import participaImg from '../../assets/images/participa.jpg'
@@ -126,6 +127,9 @@ function Home() {
           </article>
         </div>
       </section>
+
+      {/* SECCIÓN PWA — CTA CONTEXTUAL DE INSTALACIÓN (aparece únicamente si la app puede instalarse) */}
+      <PwaInstallCta />
 
       {/* SECCIÓN 3 — EVENTOS RECIENTES */}
       <section className={styles.recentEvents} aria-labelledby="recent-events-heading">
