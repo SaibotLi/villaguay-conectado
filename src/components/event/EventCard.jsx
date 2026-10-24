@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
+import { Calendar, MapPin } from 'lucide-react'
 import EventImage from '../EventImage/EventImage'
 import Button from '../ui/Button/Button'
+import Icon from '../ui/Icon/Icon'
 import { formatDisplayDate } from '../../utils/dateUtils'
 import styles from './EventCard.module.css'
 
@@ -11,8 +13,14 @@ function EventCard({ event }) {
       <div className={styles.content}>
         <h3 className={styles.title}>{event.title}</h3>
         <p className={styles.description}>{event.description}</p>
-        <p className={styles.meta}>📅 {formatDisplayDate(event.date)} · {event.time}</p>
-        <p className={styles.meta}>📍 {event.location}</p>
+        <p className={styles.meta}>
+          <Icon icon={Calendar} size={15} />
+          <span>{formatDisplayDate(event.date)} · {event.time}</span>
+        </p>
+        <p className={styles.meta}>
+          <Icon icon={MapPin} size={15} />
+          <span>{event.location}</span>
+        </p>
         <Button
           as={Link}
           to={`/eventos/${event.id}`}

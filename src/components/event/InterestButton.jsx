@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom'
+import { Heart } from 'lucide-react'
 import useAuth from '../../hooks/useAuth'
 import { useInterest } from '../../hooks/useInterest'
 import Button from '../ui/Button/Button'
+import Icon from '../ui/Icon/Icon'
 import styles from './InterestButton.module.css'
 
 function InterestButton({ eventId }) {
@@ -24,8 +26,19 @@ function InterestButton({ eventId }) {
 
   return (
     <div className={styles.container}>
-      <Button type="button" variant="accent" onClick={handleClick} disabled={loading}>
-        {interested ? '💖 Ya te interesa' : '❤️ Me interesa'}
+      <Button
+        type="button"
+        variant="accent"
+        onClick={handleClick}
+        disabled={loading}
+        aria-pressed={interested}
+      >
+        <Icon
+          icon={Heart}
+          size={16}
+          fill={interested ? 'currentColor' : 'none'}
+        />
+        {interested ? 'Ya te interesa' : 'Me interesa'}
       </Button>
       <p className={styles.count}>{interestedLabel}</p>
     </div>

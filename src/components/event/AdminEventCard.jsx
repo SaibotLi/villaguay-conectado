@@ -1,6 +1,8 @@
+import { Calendar, MapPin } from 'lucide-react'
 import EventImage from '../EventImage/EventImage'
 import Badge from '../ui/Badge/Badge'
 import Button from '../ui/Button/Button'
+import Icon from '../ui/Icon/Icon'
 import { formatDisplayDate } from '../../utils/dateUtils'
 import styles from './AdminCard.module.css'
 
@@ -17,8 +19,14 @@ function AdminEventCard({ event, onApprove, onReject }) {
       </div>
 
       <div className={styles.metaGroup}>
-        <p className={styles.meta}>📅 {formatDisplayDate(event.date)} · {event.time}</p>
-        <p className={styles.meta}>📍 {event.location}</p>
+        <p className={styles.meta}>
+          <Icon icon={Calendar} size={15} />
+          <span>{formatDisplayDate(event.date)} · {event.time}</span>
+        </p>
+        <p className={styles.meta}>
+          <Icon icon={MapPin} size={15} />
+          <span>{event.location}</span>
+        </p>
       </div>
 
       <div className={styles.actions}>

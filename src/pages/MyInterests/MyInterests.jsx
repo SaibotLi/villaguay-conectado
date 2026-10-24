@@ -26,7 +26,7 @@ function MyInterests() {
       {!loading && !error && events.length === 0 ? (
         <EmptyState
           title="Todavía no tenés eventos guardados"
-          description="Marcá “❤️ Me interesa” en un evento para encontrarlo rápido acá."
+          description="Marcá “Me interesa” en un evento para encontrarlo rápido acá."
         />
       ) : null}
 
